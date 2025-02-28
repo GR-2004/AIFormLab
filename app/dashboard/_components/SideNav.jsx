@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useUser } from "@clerk/nextjs";
 import { desc, eq } from "drizzle-orm";
-import { BarChart, LibraryBig, LineChart, MessageSquare, Shield } from "lucide-react";
+import { BarChart, Layers, LibraryBig, MessageSquare, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -34,8 +34,15 @@ const SideNav = () => {
             path: "/dashboard/analytics"
         },
 
+        {
+            id: 4,
+            name: "Templates",
+            icon: Layers,
+            path: "/dashboard/templates"
+        },
+
         // {
-        //     id: 4,
+        //     id: 5,
         //     name: "Upgrade",
         //     icon: Shield,
         //     path: "/dashboard/upgrade",

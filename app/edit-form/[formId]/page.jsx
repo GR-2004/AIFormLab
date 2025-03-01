@@ -25,6 +25,7 @@ const EditForm = ({ params }) => {
     const [selectedBackground, setSelectedBackground] = useState("");
     const [selectedStyle, setSelectedStyle] = useState("");
     const [signInEnabled, setSignInEnabled] = useState(false);
+    const [isTemplate, setIsTemplate] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -47,6 +48,7 @@ const EditForm = ({ params }) => {
             setJsonForm(JSON.parse(result[0].jsonform));
             setSelectedTheme(result[0].theme);
             setSelectedBackground(result[0].background);
+            setIsTemplate(result[0].isTemplate);
             setSelectedStyle(JSON.parse(result[0].style));
             setLoading(false);
         } catch (error) {
@@ -99,6 +101,7 @@ const EditForm = ({ params }) => {
                     background: selectedBackground,
                     style: JSON.stringify(selectedStyle),
                     enabledSignIn: signInEnabled,
+                    isTemplate: isTemplate
                 })
                 .where(
                     and(
@@ -156,6 +159,16 @@ const EditForm = ({ params }) => {
                                     <Share2 className="h-5 w-5" /> Share
                                 </Button>
                             </RWebShare>
+                            {/* Make it a template button */}
+                            <Button
+                                variant={isTemplate ? "destructive" : "default"}
+                                onClick={() => {
+                                    setIsTemplate((prev) => !prev);
+                                    updateControllerFields();
+                                }}
+                            >
+                                {isTemplate ? "Remove from Templates" : "Make it a Template"}
+                            </Button>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

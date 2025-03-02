@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { db } from "../../../config";
 import { userResponses } from "../../../config/schema";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 const FormUi = ({ jsonForm, selectedTheme, selectedStyle,
@@ -32,6 +33,8 @@ const FormUi = ({ jsonForm, selectedTheme, selectedStyle,
 
   // to reset form
   let formRef = useRef();
+
+  const router = useRouter();
 
 
   // handle Input Field change
@@ -102,6 +105,7 @@ const FormUi = ({ jsonForm, selectedTheme, selectedStyle,
       if (result) {
         formRef.reset();
         toast.success('Response Submitted Successfully!');
+        router.push("/success");
       } else {
         toast.error('Failed to submit the response. Please try again.');
       }

@@ -35,11 +35,27 @@ const FormUi = ({
   const [formData, setFormData] = useState({});
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [uploadedFileName, setUploadedFileName] = useState("");
+  const [errors, setErrors] = useState({});
   let formRef = useRef();
   const router = useRouter();
 
+  const validateField = (name, value) => {
+    let error = "";
+    if (name.includes("email")) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) error = "Invalid email format";
+    }
+    if (name.includes("phone")) {
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(value)) error = "Invalid phone number (10 digits required)";
+    }
+    return error;
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
     setFormData({ ...formData, [name]: value });
   };
 
@@ -83,6 +99,11 @@ const FormUi = ({
   
     if (missingRequiredFields.length > 0) {
       toast.error(`Please fill out required fields: ${missingRequiredFields.join(", ")}`);
+      return;
+    }
+
+    if (Object.values(errors).some((error) => error)) {
+      toast.error("Please fix validation errors before submitting.");
       return;
     }
   

@@ -4,9 +4,9 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -17,12 +17,14 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const FieldEdit = ({ defaultValue, onUpdate, deleteField }) => {
     const [label, setLabel] = useState(defaultValue.label || "");
     const [placeholder, setPlaceholder] = useState(defaultValue.placeholder || "");
     const [options, setOptions] = useState(defaultValue.options || []);
+    const [isRequired, setIsRequired] = useState(defaultValue.required || false);
 
     // Handle updating an option (for select, radio, checkbox)
     const handleOptionChange = (index, newValue) => {
@@ -34,7 +36,7 @@ const FieldEdit = ({ defaultValue, onUpdate, deleteField }) => {
 
     // Add a new option
     const addOption = () => {
-        setOptions([...options, {label:"", vakue:""}]); // Add an empty string as a new option
+        setOptions([...options, { label: "", value: "" }]); // Add an empty option
     };
 
     // Remove an option
@@ -79,19 +81,11 @@ const FieldEdit = ({ defaultValue, onUpdate, deleteField }) => {
                             <label className="text-xs">Options:</label>
                             {options.map((option, index) => (
                                 <div key={index} className="flex items-center gap-2 mt-1">
-                                    {typeof option === "object" ? (
-                                        <Input
-                                            type="text"
-                                            value={option.value}
-                                            onChange={(e) => handleOptionChange(index, e.target.value)}
-                                        />
-                                    ) : (
-                                        <Input
-                                            type="text"
-                                            value={option}
-                                            onChange={(e) => handleOptionChange(index, e.target.value)}
-                                        />
-                                    )}
+                                    <Input
+                                        type="text"
+                                        value={option.value}
+                                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                                    />
                                     <Button
                                         size="icon"
                                         variant="destructive"
@@ -107,12 +101,17 @@ const FieldEdit = ({ defaultValue, onUpdate, deleteField }) => {
                         </div>
                     )}
 
+                    {/* Required Checkbox */}
+                    <div className="mt-3 flex items-center gap-2">
+                        <Checkbox checked={isRequired} onCheckedChange={setIsRequired} />
+                        <span className="text-xs">Required</span>
+                    </div>
 
                     {/* Update Button */}
                     <Button
                         size="sm"
                         className="mt-3"
-                        onClick={() => onUpdate({ label, placeholder, options })}
+                        onClick={() => onUpdate({ label, placeholder, options, required: isRequired })}
                     >
                         Update
                     </Button>
@@ -139,8 +138,6 @@ const FieldEdit = ({ defaultValue, onUpdate, deleteField }) => {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-
-
         </div>
     );
 };

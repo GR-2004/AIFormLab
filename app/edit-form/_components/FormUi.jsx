@@ -72,22 +72,32 @@ const FormUi = ({
 
   const onFormSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (!formData || Object.keys(formData).length === 0) {
-        toast("Form data is empty. Please fill out the form.", { type: "error" });
-        return;
+  
+    let missingRequiredFields = [];
+  
+    jsonForm?.fields?.forEach((field) => {
+      if (field?.required && !formData?.[field.fieldName]) {
+        missingRequiredFields.push(field.label);
       }
-
+    });
+  
+    if (missingRequiredFields.length > 0) {
+      toast.error(`Please fill out required fields: ${missingRequiredFields.join(", ")}`);
+      return;
+    }
+  
+    try {
       const result = await db.insert(userResponses).values({
         jsonResponse: formData,
         createdAt: moment().format("DD/MM/YYYY"),
         formRef: formId,
         createdBy: user?.primaryEmailAddress?.emailAddress,
       });
-
+  
       if (result) {
         formRef.reset();
         setUploadedImageUrl("");
+        setUploadedFileName("");
         toast.success("Response Submitted Successfully!");
         router.push("/success");
       } else {
@@ -98,6 +108,7 @@ const FormUi = ({
       toast.error("Something went wrong");
     }
   };
+  
 
   return (
     <form
@@ -156,7 +167,7 @@ const FormUi = ({
           ) : field.fieldType === "file" ? (
             <div className="my-3 w-full">
               <label className="text-xs text-gray-500">{field.label}</label>
-
+          
               <CldUploadWidget uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET} onSuccess={handleFileUpload}>
                 {({ open }) => (
                   <div className="flex items-center gap-2">
@@ -170,21 +181,16 @@ const FormUi = ({
                     >
                       Upload File
                     </Button>
-
-                    {uploadedFileName && (
-                      <span className="text-sm text-gray-600">{uploadedFileName}</span> // Display file name
-                    )}
+          
+                    {uploadedFileName && <span className="text-sm text-gray-600">{uploadedFileName}</span>}
                   </div>
                 )}
               </CldUploadWidget>
-
-              {uploadedImageUrl && (
-                <div className="mt-3">
-                  <CldImage src={uploadedImageUrl} width="500" height="500" alt="Uploaded Image" className="rounded-lg" />
-                </div>
+          
+              {field?.required && !formData?.fileUrl && (
+                <p className="text-red-500 text-xs mt-1">This file is required.</p>
               )}
             </div>
-
           ) : (
             <div className="my-3 w-full">
               <label className="text-xs text-gray-500">{field?.label}</label>

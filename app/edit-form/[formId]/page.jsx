@@ -68,6 +68,7 @@ const EditForm = ({ params }) => {
         jsonForm.fields[index].label = value.label;
         jsonForm.fields[index].placeholder = value.placeholder;
         jsonForm.fields[index].options = value.options;
+        jsonForm.fields[index].required = value.required;
         setUpdateTrigger(Date.now());
     };
 

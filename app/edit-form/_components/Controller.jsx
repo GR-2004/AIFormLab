@@ -25,7 +25,7 @@ const Controller = ({ selectedTheme, selectedBackground, selectedStyle, setSignI
         addField({
             fieldType: type,
             label: "enter your label",
-            options: type !== "text" ? [{ value: "Option 1", label: "Option 1" }, { value: "Option 2", label: "Option 2" }] : null,
+            options: type !== "text" && type !== "file" ? [{ value: "Option 1", label: "Option 1" }, { value: "Option 2", label: "Option 2" }] : null,
             placeholder: type === "text" ? "enter your placholder" : null
         });
     };
@@ -112,6 +112,7 @@ const Controller = ({ selectedTheme, selectedBackground, selectedStyle, setSignI
                     <Button onClick={() => addNewField("select")}>+ Select</Button>
                     <Button onClick={() => addNewField("radio")}>+ Radio</Button>
                     <Button onClick={() => addNewField("checkbox")}>+ Checkbox</Button>
+                    <Button onClick={() => addNewField("file")}>+ File</Button>
                 </div>
             </div>
             {/* for social auth check */}

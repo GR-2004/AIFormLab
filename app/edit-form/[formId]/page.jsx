@@ -64,8 +64,17 @@ const EditForm = ({ params }) => {
         }
     }, [updateTrigger]);
 
+    const toCamelCase = (str) => {
+        return str
+            .replace(/\s(.)/g, (match) => match.toUpperCase()) // Capitalize letters after spaces
+            .replace(/\s/g, '') // Remove spaces
+            .replace(/^./, (match) => match.toLowerCase()); // Lowercase the first letter
+    };
+
     const onFieldUpdate = (value, index) => {
         jsonForm.fields[index].label = value.label;
+        jsonForm.fields[index].fieldName = toCamelCase(value.label);
+        jsonForm.fields[index].fieldTitle = value.label;
         jsonForm.fields[index].placeholder = value.placeholder;
         jsonForm.fields[index].options = value.options;
         jsonForm.fields[index].required = value.required;
@@ -74,6 +83,8 @@ const EditForm = ({ params }) => {
 
     const addField = (field) => {
         jsonForm.fields.push({
+            fieldName: field?.fieldName,
+            fieldTitle: field?.fieldTitle,
             fieldType: field?.fieldType,
             label: field?.label,
             placeholder: field?.placeholder,
@@ -205,6 +216,10 @@ const EditForm = ({ params }) => {
                                 onFieldUpdate={onFieldUpdate}
                                 deleteField={(index) => deleteField(index)}
                                 formId={record?.id}
+                                setJsonForm={(val) => {
+                                    setJsonForm(val);
+                                    setUpdateTrigger(Date.now());
+                                }}
                             />
                         </div>
                     </div>

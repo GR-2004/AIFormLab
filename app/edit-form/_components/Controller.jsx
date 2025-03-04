@@ -20,9 +20,18 @@ const Controller = ({ selectedTheme, selectedBackground, selectedStyle, setSignI
     const [showMore, setShowMore] = useState(6);
     const [fields, setFields] = useState([]);
 
+    const toCamelCase = (str) => {
+        return str
+            .replace(/\s(.)/g, (match) => match.toUpperCase()) // Capitalize letters after spaces
+            .replace(/\s/g, '') // Remove spaces
+            .replace(/^./, (match) => match.toLowerCase()); // Lowercase the first letter
+    };
+
     // Add new field
     const addNewField = (type) => {
         addField({
+            fieldName: toCamelCase("enter your label"),
+            fieldTitle: "enter your label",
             fieldType: type,
             label: "enter your label",
             options: type !== "text" && type !== "file" ? [{ value: "Option 1", label: "Option 1" }, { value: "Option 2", label: "Option 2" }] : null,

@@ -33,12 +33,15 @@ const CreateForm = () => {
     try {
       const result = await AiChatSession.sendMessage("Description:" + userInput + PROMPT);
       const responseText = await result.response.text();
-
+      const fullName = user?.firstName && user?.lastName 
+            ? `${user.firstName} ${user.lastName}` 
+            : user?.firstName || "Unknown User";
       if (responseText) {
         const resp = await db.insert(JsonForms).values({
           jsonform: responseText,
           createdBy: user?.primaryEmailAddress?.emailAddress,
           createdAt: moment().format('DD/MM/YYYY'),
+          fullName: fullName
         }).returning({ id: JsonForms.id });
 
         if (resp[0]?.id) {

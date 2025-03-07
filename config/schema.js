@@ -9,7 +9,8 @@ export const JsonForms = pgTable('JsonForms', {
     createdBy: varchar('createdBy').notNull(),
     createdAt: varchar('createdAt').notNull(),
     enabledSignIn: boolean('enabledSignIn').default(false),
-    isTemplate: boolean('isTemplate').default(false)
+    isTemplate: boolean('isTemplate').default(false),
+    fullName: varchar('fullName').default("Unknown User"),
 });
 
 export const userResponses = pgTable('userResponses', {

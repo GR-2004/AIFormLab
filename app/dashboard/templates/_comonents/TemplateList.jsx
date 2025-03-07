@@ -4,14 +4,13 @@ import { JsonForms } from "@/config/schema";
 import { desc, eq } from "drizzle-orm";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import FormUi from "@/app/edit-form/_components/FormUi";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import TemplateCard from "./TemplateCard";
 
 const TemplateList = () => {
     const [templateList, setTemplateList] = useState([]);
@@ -49,6 +48,9 @@ const TemplateList = () => {
     const handleUseTemplate = async (template) => {
         setLoading(true);
         try {
+            const fullName = user?.firstName && user?.lastName 
+            ? `${user.firstName} ${user.lastName}` 
+            : user?.firstName || "Unknown User";
             const result = await db.insert(JsonForms).values({
                 jsonform: template.jsonform,
                 theme: template.theme,
@@ -56,6 +58,7 @@ const TemplateList = () => {
                 style: template.style,
                 createdBy: user?.primaryEmailAddress?.emailAddress,
                 createdAt: moment().format('DD/MM/YYYY'),
+                fullName: fullName
             }).returning({ id: JsonForms.id });
 
             if (result[0]?.id) {
@@ -81,35 +84,7 @@ const TemplateList = () => {
                 <div className="text-center text-gray-500">No templates found.</div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {templateList.map((template, index) => {
-                        const jsonForm = template?.jsonform ? JSON.parse(template.jsonform) : null;
-                        const gradientColors = [
-                            "bg-gradient-to-r from-blue-500 to-purple-500",
-                            "bg-gradient-to-r from-green-500 to-teal-500",
-                            "bg-gradient-to-r from-yellow-500 to-orange-500",
-                            "bg-gradient-to-r from-red-500 to-pink-500",
-                        ];
-                        const headerClass = gradientColors[index % gradientColors.length];
-
-                        return (
-                            <Card key={template.id} className="overflow-hidden rounded-2xl shadow-lg transition-transform duration-300 hover:scale-[1.03]">
-                                <CardHeader className={`${headerClass} text-white p-4 text-xl font-semibold`}>
-                                    {jsonForm?.formTitle || "Untitled Form"}
-                                </CardHeader>
-                                <CardContent className="p-4 text-gray-700 dark:text-gray-300">
-                                    <p className="text-sm font-medium">Created by: {template?.createdBy || "Unknown"}</p>
-                                </CardContent>
-                                <CardFooter className="p-4 flex gap-2">
-                                    <Button className="w-1/2" variant="outline" onClick={() => handleUseTemplate(template)}>
-                                        Use Template
-                                    </Button>
-                                    <Button className="w-1/2" variant="default" onClick={() => openPreview(template)}>
-                                        Preview
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        );
-                    })}
+                    {templateList.map((template, index) => <TemplateCard template={template} key={index} index={index} handleUseTemplate={handleUseTemplate} openPreview={openPreview} />)}
                 </div>
             )}
 

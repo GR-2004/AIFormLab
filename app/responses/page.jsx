@@ -2,8 +2,8 @@
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import React, { useState } from "react";
-import { db } from "../../../config";
-import { JsonForms } from "../../../config/schema";
+import { db } from "../../config";
+import { JsonForms } from "../../config/schema";
 import { desc, eq } from "drizzle-orm";
 import { Loader } from "lucide-react";
 import FormListItemResp from "./_components/FormListItemResp";

@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { LucideLoader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Download, Users } from "lucide-react";
-import { db } from "../../../../config";
-import { userResponses } from "../../../../config/schema";
+import { db } from "../../../config";
+import { userResponses } from "../../../config/schema";
 import { eq } from "drizzle-orm";
 import * as XLSX from 'xlsx'
 

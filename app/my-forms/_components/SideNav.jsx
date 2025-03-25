@@ -17,28 +17,28 @@ const SideNav = () => {
             id: 1,
             name: "My Forms",
             icon: LibraryBig,
-            path: "/dashboard",
+            path: "/my-forms",
         },
 
         {
             id: 2,
             name: "Responses",
             icon: MessageSquare,
-            path: "/dashboard/responses",
+            path: "/responses",
         },
 
         {
             id: 3,
             name: "Analytics",
             icon: BarChart,
-            path: "/dashboard/analytics"
+            path: "/analytics"
         },
 
         {
             id: 4,
             name: "Templates",
             icon: Layers,
-            path: "/dashboard/templates"
+            path: "/templates"
         },
 
         // {

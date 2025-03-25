@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { db } from "../../../config";
-import { JsonForms } from "../../../config/schema";
+import { db } from "../../../../config";
+import { JsonForms } from "../../../../config/schema";
 import { and, eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { ArrowLeft, Loader, Share2, SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { RWebShare } from "react-web-share";
 import FormUi from "../_components/FormUi";
 import { toast } from "sonner";

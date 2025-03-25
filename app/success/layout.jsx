@@ -1,7 +1,7 @@
 "use client";
 import { SignedIn } from "@clerk/nextjs";
 import React from "react";
-import SideNav from "../dashboard/_components/SideNav";
+import SideNav from "../my-forms/_components/SideNav";
 import Header from "../_components/Header";
 
 

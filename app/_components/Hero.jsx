@@ -31,7 +31,7 @@ const Hero = () => {
             <div className="mt-8 flex flex-wrap justify-center items-center">
               <Link
                 className={`block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-opacity-75 sm:w-auto ${currentTheme === "dark" ? "hover:bg-blue-500" : "hover:bg-blue-700"}`}
-                href="/dashboard"
+                href="/my-forms"
               >
                 Get Started
               </Link>

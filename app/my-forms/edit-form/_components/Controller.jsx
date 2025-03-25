@@ -7,11 +7,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import Themes from "../../_data/Themes";
-import GradientBg from "../../_data/GradientBg";
-import { Button } from "../../../components/ui/button";
-import Style from "../../_data/Style";
-import { Checkbox } from "../../../components/ui/checkbox";
+import Themes from "../../../_data/Themes";
+import GradientBg from "../../../_data/GradientBg";
+import { Button } from "../../../../components/ui/button";
+import Style from "../../../_data/Style";
+import { Checkbox } from "../../../../components/ui/checkbox";
 import { Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 

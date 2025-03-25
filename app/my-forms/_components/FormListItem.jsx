@@ -97,7 +97,7 @@ const FormListItem = ({ jsonForm, formRecord, refreshData }) => {
                     </Button>
                 </RWebShare>
 
-                <Link href={`/edit-form/${formRecord.id}`}>
+                <Link href={`/my-forms/edit-form/${formRecord.id}`}>
                     <Button size="sm" className="flex gap-2 dark:bg-gray-700 dark:text-white">
                         <Edit className="h-5 w-5" /> Edit
                     </Button>

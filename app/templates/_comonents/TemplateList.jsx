@@ -6,7 +6,7 @@ import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import FormUi from "@/app/edit-form/_components/FormUi";
+import FormUi from "@/app/my-forms/edit-form/_components/FormUi";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";

@@ -1,44 +1,49 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Header from "./Header";
-import { useTheme } from "next-themes"; // Import the useTheme hook
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import React from "react";
+import TemplateCard from "./TemplateCard";
 
 const Hero = () => {
-  const { theme, systemTheme } = useTheme();
-
-  const currentTheme = theme === "system" ? systemTheme : theme;
-
   return (
-    <div className={`min-h-screen ${currentTheme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
-      <Header />
-      <section className={`min-h-[calc(100vh-60px)] ${currentTheme === "dark" ? "bg-gray-800" : "bg-gray-50"}`}>
-        <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen">
-          <div className="mx-auto max-w-xl text-center">
-            <h1
-              className={`bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl ${currentTheme === "dark" ? "text-white" : "text-gray-900"}`}
-            >
-              Create Your Forms
-              <span className="sm:block"> With AI </span>
-            </h1>
-
-            <p className={`mx-auto mt-4 max-w-xl sm:text-xl/relaxed ${currentTheme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-              Build custom forms instantly using AI. Transform your ideas into professional forms with
-              natural language - no coding required.
-            </p>
-
-            <div className="mt-8 flex flex-wrap justify-center items-center">
-              <Link
-                className={`block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-opacity-75 sm:w-auto ${currentTheme === "dark" ? "hover:bg-blue-500" : "hover:bg-blue-700"}`}
-                href="/my-forms"
-              >
-                Get Started
-              </Link>
+    <div className="min-h-screen bg-white flex items-center justify-center flex-col gap-4 md:gap-8">
+      <div className="flex flex-col items-center justify-center gap-4">
+        <Image src={"/logo-icon.svg"} alt="logo" width={64} height={64} />
+        <h1 className="text-5xl font-semibold max-w-xl text-center">
+          Create a form with
+          <span className="text-primary"> Formify</span> in Minutes
+        </h1>
+      </div>
+      <div className="max-w-2xl w-full">
+        <div className="bg-primary px-1 pb-1 pt-4 rounded-2xl">
+          <div className="p-4 rounded-xl bg-background">
+            <input
+              type="text"
+              placeholder="Enter the prompt ex. Create a School Registration form"
+              className="w-full border-none outline-none pb-6"
+            />
+            <div className="w-full flex justify-end">
+              <Button>Generate form</Button>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+      <div className="max-w-3xl w-full">
+        <div className="py-6 flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <h1 className="text-base font-semibold">
+              Recently created Templates
+            </h1>
+            <Button variant="outline" className="border-none">
+              View More
+            </Button>
+          </div>
+          <div className="flex justify-between items-center">
+            {[...Array(3)].map((_, index) => (
+              <TemplateCard key={index} />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -27,7 +27,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-3xl w-full">
+      <div className="max-w-3xl">
         <div className="py-6 flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <h1 className="text-base font-semibold">
@@ -37,7 +37,7 @@ const Hero = () => {
               View More
             </Button>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex items-center gap-6">
             {[...Array(3)].map((_, index) => (
               <TemplateCard key={index} />
             ))}

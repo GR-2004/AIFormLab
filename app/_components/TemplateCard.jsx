@@ -3,9 +3,9 @@ import React from "react";
 
 const TemplateCard = () => {
   return (
-    <div className="p-5 border rounded-xl flex flex-col gap-4 relative overflow-hidden">
+    <div className="p-5 border rounded-xl flex flex-col gap-4 relative overflow-hidden w-full flex-1 min-w-[250px]">
         <img src="./Vector.svg" className="absolute top-0 right-[-2px]" />
-      <img className="aspect-video" src="https://picsum.photos/200/200 " />
+      <img className="aspect-video" src="https://picsum.photos/400/400 " />
       <div className="flex gap-2 items-center">
         <img className="w-10 h-10 rounded-full" src="https://picsum.photos/50/50" />
         <div className="flex flex-col">

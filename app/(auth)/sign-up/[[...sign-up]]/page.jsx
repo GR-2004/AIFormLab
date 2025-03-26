@@ -85,7 +85,6 @@ export default function SignUpPage() {
         currentTheme === "dark" ? "bg-black" : "bg-gray-100"
       }`}
     >
-      <Header /> {/* Ensure the header is at the top */}
       <div
         className="flex items-center justify-center min-h-[calc(100vh-60px)]" // Adjust height to avoid header overlap
       >

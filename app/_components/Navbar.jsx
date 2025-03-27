@@ -26,7 +26,7 @@ const menuList = [
   {
     id: 3,
     name: "Analytics",
-    path: "/responses/analytics/form/4",
+    path: "/analytics",
   },
 
   {

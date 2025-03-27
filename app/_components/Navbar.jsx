@@ -9,7 +9,7 @@ const menuList = [
   {
     id: 0,
     name: "Home",
-    path: "/my-forms",
+    path: "/",
   },
   {
     id: 1,
@@ -26,7 +26,7 @@ const menuList = [
   {
     id: 3,
     name: "Analytics",
-    path: "/analytics",
+    path: "/responses/analytics/form/4",
   },
 
   {

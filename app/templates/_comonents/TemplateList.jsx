@@ -10,7 +10,8 @@ import FormUi from "@/app/my-forms/edit-form/_components/FormUi";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import TemplateCard from "./TemplateCard";
+import TemplateCard from "@/app/_components/TemplateCard";
+// import TemplateCard from "./TemplateCard";
 
 const TemplateList = () => {
     const [templateList, setTemplateList] = useState([]);
@@ -75,7 +76,7 @@ const TemplateList = () => {
     };
 
     return (
-        <div className="p-6">
+        <div>
             {loading ? (
                 <div className="flex justify-center items-center h-20">
                     <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
@@ -85,6 +86,7 @@ const TemplateList = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                     {templateList.map((template, index) => <TemplateCard template={template} key={index} index={index} handleUseTemplate={handleUseTemplate} openPreview={openPreview} />)}
+                    {/* {templateList.map((template, index) => <TemplateCard template={template} key={index} index={index} handleUseTemplate={handleUseTemplate} openPreview={openPreview} />)} */}
                 </div>
             )}
 

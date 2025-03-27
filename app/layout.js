@@ -20,9 +20,9 @@ export default function RootLayout({ children }) {
       <html lang="en" data-theme='light'>
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Navbar />
             <Toaster richColors />
-            {children}
+            <Navbar />
+            <main className="pt-16">{children}</main>
           </ThemeProvider>
         </body>
       </html>

@@ -40,7 +40,7 @@ const FormList = () => {
                     <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
                 </div>
             ) : formList.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {formList.map((form, index) => (
                         <div key={index}>
                             <FormListItem

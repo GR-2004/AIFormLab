@@ -12,8 +12,9 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { MoveLeft } from "lucide-react";
+import { Download, MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const FormAnalysisPage = ({ params }) => {
   const router = useRouter();
@@ -69,13 +70,21 @@ const FormAnalysisPage = ({ params }) => {
             Back to Responses
           </span>
         </div>
-        <div className="w-full">
-          <h1 className="text-3xl font-semibold break-words">
-            Cricket Registration form
-          </h1>
-          <p className="text-base font-medium break-words text-muted-foreground">
-            Register for cricket tournament
-          </p>
+        <div className="flex justify-between items-center gap-8 w-full">
+          <div className="w-full">
+            <h1 className="text-3xl font-semibold break-words">
+              Cricket Registration form
+            </h1>
+            <p className="text-base font-medium break-words text-muted-foreground">
+              Register for cricket tournament
+            </p>
+          </div>
+          <div>
+            <Button>
+              <Download />
+              Export Response
+            </Button>
+          </div>
         </div>
       </div>
 

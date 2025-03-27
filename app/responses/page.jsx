@@ -18,6 +18,9 @@ const ResponsesPage = () => {
   const [loading, setLoading] = useState(true);
   const [formList, setFormList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [totalResponses, setTotalResponses] = useState(0);
+  const [totalForms, setTotalForms] = useState(0);
+  const [activeForms, setActiveForms] = useState(0);
 
   useEffect(() => {
     user && GetFormList();
@@ -32,6 +35,7 @@ const ResponsesPage = () => {
         .where(eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress))
         .orderBy(desc(JsonForms.id));
       setFormList(result);
+      setTotalForms(result.length);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -75,33 +79,37 @@ const ResponsesPage = () => {
           <div className="flex items-center gap-24">
             <div className="flex p-4 gap-3 border rounded-xl w-full">
               <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-              <FileText />
+                <FileText />
               </div>
               <div>
                 <p className="text-sm font-medium break-words text-muted-foreground">
                   Total forms
                 </p>
-                <h1 className="text-xl font-semibold break-words">240</h1>
+                <h1 className="text-xl font-semibold break-words">
+                  {totalForms}
+                </h1>
               </div>
             </div>
             <div className="flex p-4 gap-3 border rounded-xl w-full">
               <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-              <UsersRound />
+                <UsersRound />
               </div>
               <div>
                 <p className="text-sm font-medium break-words text-muted-foreground">
-                  Total forms
+                  Total Responses
                 </p>
-                <h1 className="text-xl font-semibold break-words">240</h1>
+                <h1 className="text-xl font-semibold break-words">
+                  {totalResponses}
+                </h1>
               </div>
             </div>
             <div className="flex p-4 gap-3 border rounded-xl w-full">
               <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-              <Activity />
+                <Activity />
               </div>
               <div>
                 <p className="text-sm font-medium break-words text-muted-foreground">
-                  Total forms
+                  Active Forms
                 </p>
                 <h1 className="text-xl font-semibold break-words">240</h1>
               </div>
@@ -114,12 +122,13 @@ const ResponsesPage = () => {
               //   formRecord={form}
               //   jsonForm={JSON.parse(form.jsonform)}
               // />
-                <MyFormCard
-                  key={index}
-                  formRecord={form}
-                  jsonForm={JSON.parse(form.jsonform)}
-                  onClick={() => router.push(`/responses/form/${form.id}`)}
-                />
+              <MyFormCard
+                key={index}
+                formRecord={form}
+                jsonForm={JSON.parse(form.jsonform)}
+                onClick={() => router.push(`/responses/form/${form.id}`)}
+                setTotalResponses={(value) => setTotalResponses(value)}
+              />
             ))}
           </div>
         </>

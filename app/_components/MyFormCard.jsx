@@ -1,17 +1,34 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { and, eq } from "drizzle-orm";
 import { toast } from "sonner";
 import { RWebShare } from "react-web-share";
 import { EllipsisVertical, FileText } from "lucide-react";
 import { useUser } from '@clerk/nextjs';
 import { db } from '@/config';
-import { JsonForms } from '@/config/schema';
+import { JsonForms, userResponses } from '@/config/schema';
 
-const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick }) => {
+const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick, setTotalResponses }) => {
     const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [responseCount, setResponseCount] = useState(0);
+  
+      useEffect(() => {
+          const fetchData = async () => {
+              try {
+                  const result = await db.select()
+                      .from(userResponses)
+                      .where(eq(userResponses.formRef, formRecord.id))
+                      .orderBy(userResponses.createdAt);
+                  setResponseCount(result?.length);
+                  setTotalResponses((prev) => prev + result?.length);
+              } catch (error) {
+                  console.error(error);
+              }
+          };
+          fetchData();
+      }, []);
 
   const deleteForm = async () => {
     setLoading(true);
@@ -73,7 +90,7 @@ const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick }) => {
       {/* Bottom Section */}
       <div className="w-full flex justify-between items-center">
         <div className="px-3 py-1 text-xs font-semibold rounded-xl bg-muted">
-          21 Responses
+          {responseCount} Responses
         </div>
       </div>
     </div>

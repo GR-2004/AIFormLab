@@ -27,15 +27,6 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center gap-5">
-            {/* Dark Mode Toggle */}
-            <Button
-              variant="outline"
-              onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-              className="border-gray-300 dark:border-gray-600 dark:text-white"
-            >
-              {currentTheme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-            </Button>
-
             {/* Auth Buttons */}
             {isSignedIn ? (
               <>
@@ -48,7 +39,6 @@ const Header = () => {
                   </Button>
                 </Link>
                 <UserButton />
-
               </>
             ) : (
               <SignInButton>

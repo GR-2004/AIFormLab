@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 import TemplateCard from "./TemplateCard";
+import { useRouter } from "next/navigation";
+import TemplateList from "../templates/_comonents/TemplateList";
 
 const promptMessage = [
   {
@@ -27,6 +30,7 @@ const promptMessage = [
 ];
 
 const Hero = () => {
+  const router = useRouter();
   return (
     <div className="flex items-center justify-center flex-col gap-4 md:gap-8 max-w-4xl mx-auto">
       <div className="flex flex-col items-center justify-center gap-6">
@@ -67,15 +71,11 @@ const Hero = () => {
           <h1 className="text-base font-semibold">
             Recently created Templates
           </h1>
-          <Button variant="outline" className="border-none">
+          <Button variant="outline" className="border-none" onClick={() => {router.push("/templates")}}>
             View More
           </Button>
         </div>
-        <div className="flex gap-6">
-          {[...Array(3)].map((_, index) => (
-            <TemplateCard key={index} />
-          ))}
-        </div>
+            <TemplateList />
       </div>
     </div>
   );

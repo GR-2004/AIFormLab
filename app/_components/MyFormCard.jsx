@@ -22,7 +22,7 @@ const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick, setTotalRespon
                       .where(eq(userResponses.formRef, formRecord.id))
                       .orderBy(userResponses.createdAt);
                   setResponseCount(result?.length);
-                  setTotalResponses((prev) => prev + result?.length);
+                  setTotalResponses?.((prev) => prev + result?.length);
               } catch (error) {
                   console.error(error);
               }

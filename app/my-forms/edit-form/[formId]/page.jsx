@@ -149,7 +149,6 @@ const EditForm = ({ params }) => {
                         <div className="flex items-center justify-between gap-2 mb-4 md:mb-0">
                             <Link href={`/aiform/${record?.id}`} target="_blank">
                                 <Button
-                                    variant="outline"
                                     className="flex items-center gap-2 border-gray-300 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
                                 >
                                     <SquareArrowOutUpRight className="h-5 w-5" />
@@ -167,12 +166,12 @@ const EditForm = ({ params }) => {
                                 disableNative={true}
                                 onClick={() => console.log("shared successfully!")}
                             >
-                                <Button className="flex items-center gap-2 bg-gray-700 hover:bg-gray-950 dark:bg-gray-600 dark:hover:bg-gray-800 dark:text-white">
+                                <Button variant="outline" className="flex items-center gap-2">
                                     <Share2 className="h-5 w-5" /> Share
                                 </Button>
                             </RWebShare>
                             {/* Make it a template button */}
-                            <Button
+                            {/* <Button
                                 variant={isTemplate ? "destructive" : "default"}
                                 onClick={() => {
                                     setIsTemplate((prev) => !prev);
@@ -180,7 +179,7 @@ const EditForm = ({ params }) => {
                                 }}
                             >
                                 {isTemplate ? "Remove from Templates" : "Make it a Template"}
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -203,6 +202,11 @@ const EditForm = ({ params }) => {
                                     updateControllerFields();
                                 }}
                                 addField={(field) => addField(field)}
+                                isTemplate={isTemplate}
+                                setIsTemplate={() => {
+                                    setIsTemplate((prev) => !prev);
+                                    updateControllerFields();
+                                }}
                             />
                         </div>
                         <div

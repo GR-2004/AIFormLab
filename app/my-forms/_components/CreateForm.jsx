@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
 import { db } from "@/config";
 import { JsonForms } from "@/config/schema";
 import moment from 'moment';
-import { Loader } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 
 const CreateForm = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -45,7 +45,7 @@ const CreateForm = () => {
         }).returning({ id: JsonForms.id });
 
         if (resp[0]?.id) {
-          router.push('/edit-form/' + resp[0].id);
+          router.push('/my-forms/edit-form/' + resp[0].id);
         }
       }
     } catch (error) {
@@ -57,7 +57,7 @@ const CreateForm = () => {
 
   return (
     <div>
-      <Button onClick={() => setOpenDialog(true)}>+ Create Form</Button>
+      <Button onClick={() => setOpenDialog(true)}>Create Form <Plus /></Button>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent className="bg-white dark:bg-gray-900 dark:text-white border dark:border-gray-700">
           <DialogHeader>

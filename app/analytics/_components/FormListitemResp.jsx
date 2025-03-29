@@ -33,7 +33,7 @@ const FormListItemResp = ({ formRecord, jsonForm, setTotalResponses }) => {
                         border border-gray-200 dark:border-zinc-800 
                         rounded-lg transition-colors 
                         hover:bg-gray-100 dark:hover:bg-zinc-800 cursor-pointer"
-                onClick={() => router.push(`/dashboard/analytics/form/${formRecord?.id}`)}>
+                onClick={() => router.push(`/analytics/form/${formRecord?.id}`)}>
             <div>
                 <h3 className="text-gray-900 dark:text-white font-medium">{jsonForm?.formTitle}</h3>
                 <p className="text-gray-600 dark:text-zinc-400 text-sm">{formRecord?.createdAt}</p>

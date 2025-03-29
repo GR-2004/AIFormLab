@@ -7,6 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { desc, eq } from "drizzle-orm";
 import FormListItem from "./FormListItem";
 import { Loader } from "lucide-react";
+import MyFormCard from "@/app/_components/MyFormCard";
 
 const FormList = () => {
     const { user } = useUser();
@@ -40,13 +41,18 @@ const FormList = () => {
                     <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
                 </div>
             ) : formList.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {formList.map((form, index) => (
                         <div key={index}>
-                            <FormListItem
+                            {/* <FormListItem
                                 jsonForm={JSON.parse(form.jsonform)}
                                 formRecord={form}
                                 refreshData={GetFormList}
+                            /> */}
+                            <MyFormCard 
+                            jsonForm={JSON.parse(form.jsonform)}
+                            formRecord={form}
+                            refreshData={GetFormList}
                             />
                         </div>
                     ))}

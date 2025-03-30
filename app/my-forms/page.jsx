@@ -1,10 +1,12 @@
+"use client";
 import React from "react";
 import CreateForm from "./_components/CreateForm";
 import FormList from "./_components/FormList";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
+  const router = useRouter();
   return (
     <div className="p-4 md:p-8 flex flex-col gap-8 min-h-screen overflow-hidden">
       <div className="flex flex-col md:items-center md:flex-row gap-4 md:gap-6">

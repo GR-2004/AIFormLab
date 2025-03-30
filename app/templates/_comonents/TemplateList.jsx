@@ -18,7 +18,7 @@ import { useUser } from "@clerk/nextjs";
 import TemplateCard from "@/app/_components/TemplateCard";
 // import TemplateCard from "./TemplateCard";
 
-const TemplateList = () => {
+const TemplateList = ({columns}) => {
   const [templateList, setTemplateList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [previewForm, setPreviewForm] = useState(null);
@@ -93,7 +93,12 @@ const TemplateList = () => {
       ) : templateList.length === 0 ? (
         <div className="text-center text-gray-500">No templates found.</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div
+          className={`grid gap-6 justify-center`}
+          style={{
+            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+          }}
+        >
           {templateList.map((template, index) => (
             <TemplateCard
               template={template}

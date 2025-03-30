@@ -12,11 +12,30 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { ArrowLeft, Download, MoveLeft } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-
 import EmptyStatePlaceholder from "app/_components/EmptyState";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const formatHeaderName = (key) => {
+  // Convert camelCase or snake_case to Title Case with spaces
+  return (
+    key
+      // Split by uppercase letters, underscores, or hyphens
+      .split(/(?=[A-Z])|_|-/)
+      // Capitalize first letter of each word and join with spaces
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ")
+  );
+};
 
 const FormAnalysisPage = ({ params }) => {
   const router = useRouter();
@@ -60,6 +79,19 @@ const FormAnalysisPage = ({ params }) => {
     fetchResponses();
   }, [params?.formId]);
 
+  const renderCell = (value) => {
+    if (Array.isArray(value)) {
+      return value
+        .map((item) =>
+          typeof item === "object" && item.label ? item.label : item
+        )
+        .join(", ");
+    }
+    return typeof value === "object"
+      ? JSON.stringify(value, null, 2)
+      : value?.toString();
+  };
+
   return (
     <div className="p-4 md:p-8 flex flex-col gap-8 min-h-screen">
       <div className="inline-flex flex-col justify-start items-start gap-3">
@@ -99,25 +131,29 @@ const FormAnalysisPage = ({ params }) => {
         />
       ) : (
         <>
-          {/* Table */}
-          <div className="overflow-x-auto mb-6">
-            <table className="min-w-full border border-gray-200 dark:border-gray-700 rounded-lg">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
-                  {/* Dynamically adding table headers for each parsedResponse key */}
+          {/* Replace old table with shadcn Table */}
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-b">
                   {responses.length > 0 &&
                     Object.keys(
                       JSON.parse(responses[0].jsonResponse || "{}")
                     ).map((key) => (
-                      <th key={key} className="px-4 py-2 border">
-                        {key}
-                      </th>
+                      <TableHead
+                        key={key}
+                        className="border-r last:border-r-0 font-semibold"
+                      >
+                        {formatHeaderName(key)}
+                      </TableHead>
                     ))}
-                  <th className="px-4 py-2 border">Created By</th>
-                  <th className="px-4 py-2 border">Created At</th>
-                </tr>
-              </thead>
-              <tbody>
+                  <TableHead className="border-r font-semibold">
+                    Created By
+                  </TableHead>
+                  <TableHead className="font-semibold">Created At</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {responses.map((response, index) => {
                   let parsedResponse;
                   try {
@@ -127,47 +163,33 @@ const FormAnalysisPage = ({ params }) => {
                   }
 
                   return (
-                    <tr
-                      key={index}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700"
-                    >
-                      {/* Dynamically adding table cells for each parsedResponse value */}
+                    <TableRow key={index} className="border-b">
                       {Object.entries(parsedResponse).map(([key, value]) => (
-                        <td
+                        <TableCell
                           key={key}
-                          className="px-4 py-2 border text-gray-800 dark:text-gray-300 truncate max-w-xs cursor-pointer"
-                          onDoubleClick={() => setModalData(value)}
+                          className="max-w-[200px] truncate border-r"
+                          onClick={() => setModalData(value)}
                         >
-                          {Array.isArray(value)
-                            ? value
-                                .map((item) =>
-                                  typeof item === "object" && item.label
-                                    ? item.label
-                                    : item
-                                )
-                                .join(", ")
-                            : typeof value === "object"
-                            ? JSON.stringify(value, null, 2)
-                            : value.toString()}
-                        </td>
+                          {renderCell(value)}
+                        </TableCell>
                       ))}
-                      <td className="px-4 py-2 border text-gray-800 dark:text-gray-300">
+                      <TableCell className="border-r">
                         {response.createdBy}
-                      </td>
-                      <td className="px-4 py-2 border text-gray-800 dark:text-gray-300">
+                      </TableCell>
+                      <TableCell>
                         {new Date(response.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   );
                 })}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
 
           <h1 className="text-2xl font-semibold w-full">Responses Overtime</h1>
 
           {/* Chart */}
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-6">
+          <div className="bg-muted/40 p-4 rounded-lg shadow-md mt-6">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={chartData}>
                 <XAxis dataKey="date" stroke="#8884d8" />
@@ -179,28 +201,29 @@ const FormAnalysisPage = ({ params }) => {
             </ResponsiveContainer>
           </div>
 
-          {/* Modal for expanded data */}
+          {/* Update modal to use shadcn styling */}
           {modalData && (
             <div
-              className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+              className="fixed inset-0 bg-black/50 flex justify-center items-center"
               onClick={() => setModalData(null)}
             >
               <div
-                className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg max-w-2xl"
+                className="bg-background p-6 rounded-lg shadow-lg max-w-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 <h2 className="text-lg font-semibold mb-4">Full Data</h2>
-                <pre className="text-sm text-gray-800 dark:text-gray-300 whitespace-pre-wrap">
+                <pre className="text-sm text-foreground/70 whitespace-pre-wrap bg-muted p-4 rounded-md">
                   {typeof modalData === "object"
                     ? JSON.stringify(modalData, null, 2)
                     : modalData}
                 </pre>
-                <button
-                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                <Button
+                  variant="destructive"
+                  className="mt-4"
                   onClick={() => setModalData(null)}
                 >
                   Close
-                </button>
+                </Button>
               </div>
             </div>
           )}

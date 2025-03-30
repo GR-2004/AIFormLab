@@ -9,7 +9,7 @@ import { Plus } from "lucide-react";
 export default function DashboardPage() {
   const router = useRouter();
   return (
-    <div className="p-4 md:p-8 flex flex-col gap-8 min-h-screen overflow-hidden">
+    <section className="max-w-[1376px] mx-auto p-4 md:p-8 flex flex-col gap-8 min-h-screen overflow-hidden">
       <div className="flex flex-col md:items-center md:flex-row gap-4 md:gap-6">
         <div className="w-full inline-flex flex-col justify-start items-start gap-1">
           <h1 className="text-2xl md:text-3xl font-semibold break-words">
@@ -29,6 +29,6 @@ export default function DashboardPage() {
         </div>
       </div>
       <FormList />
-    </div>
+    </section>
   );
 }

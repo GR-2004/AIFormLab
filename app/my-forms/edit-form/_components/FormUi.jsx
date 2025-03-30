@@ -31,7 +31,7 @@ const FormUi = ({
   editable = true,
   formId = 0,
   enabledSignIn = false,
-  setJsonForm
+  setJsonForm,
 }) => {
   const { user, isSignedIn } = useUser();
   const [formData, setFormData] = useState({});
@@ -48,7 +48,8 @@ const FormUi = ({
     }
     if (name.includes("phone")) {
       const phoneRegex = /^[0-9]{10}$/;
-      if (!phoneRegex.test(value)) error = "Invalid phone number (10 digits required)";
+      if (!phoneRegex.test(value))
+        error = "Invalid phone number (10 digits required)";
     }
     return error;
   };
@@ -103,13 +104,19 @@ const FormUi = ({
     jsonForm?.fields?.forEach((field) => {
       console.log("field", field.fieldName);
       if (field?.required && !formData?.[field.fieldName]) {
-        console.log("missingRequiredFields", field, formData?.[field.fieldName]);
+        console.log(
+          "missingRequiredFields",
+          field,
+          formData?.[field.fieldName]
+        );
         missingRequiredFields.push(field.label);
       }
     });
 
     if (missingRequiredFields.length > 0) {
-      toast.error(`Please fill out required fields: ${missingRequiredFields.join(", ")}`);
+      toast.error(
+        `Please fill out required fields: ${missingRequiredFields.join(", ")}`
+      );
       return;
     }
 
@@ -140,12 +147,11 @@ const FormUi = ({
     }
   };
 
-
   return (
     <form
       ref={(e) => (formRef = e)}
       onSubmit={onFormSubmit}
-      className="border rounded-md p-5 md:w-[720px]"
+      className="border rounded-xl p-5 w-full"
       data-theme={selectedTheme}
       style={{
         boxShadow: selectedStyle?.key === "boxshadow" && "5px 5px 0px black",
@@ -153,29 +159,48 @@ const FormUi = ({
       }}
     >
       <h2 className="font-bold text-center text-2xl">{jsonForm?.formTitle}</h2>
-      <h3 className="text-sm text-gray-500 mb-5 text-center">{jsonForm?.formHeading}</h3>
+      <h3 className="text-sm text-gray-500 mb-5 text-center">
+        {jsonForm?.formHeading}
+      </h3>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="form-fields">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {jsonForm?.fields?.map((field, index) => (
-                <Draggable key={index} draggableId={index.toString()} index={index}>
+                <Draggable
+                  key={index}
+                  draggableId={index.toString()}
+                  index={index}
+                >
                   {(provided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className="flex items-center gap-2">
+                      className="flex items-center gap-2"
+                    >
                       {field?.fieldType === "select" ? (
                         <div className="my-3 w-full">
-                          <label className="text-xs text-gray-500">{field.label}</label>
-                          <Select required={field?.required} onValueChange={(v) => handleSelectChange(field.fieldName, v)}>
+                          <label className="text-xs text-gray-500">
+                            {field.label}
+                          </label>
+                          <Select
+                            required={field?.required}
+                            onValueChange={(v) =>
+                              handleSelectChange(field.fieldName, v)
+                            }
+                          >
                             <SelectTrigger className="w-full bg-transparent">
                               <SelectValue placeholder={field?.placeholder} />
                             </SelectTrigger>
                             <SelectContent>
                               {field?.options?.map((item, idx) => (
-                                <SelectItem key={idx} value={typeof item === "object" ? item.value : item}>
+                                <SelectItem
+                                  key={idx}
+                                  value={
+                                    typeof item === "object" ? item.value : item
+                                  }
+                                >
                                   {typeof item === "object" ? item.label : item}
                                 </SelectItem>
                               ))}
@@ -184,11 +209,25 @@ const FormUi = ({
                         </div>
                       ) : field.fieldType === "radio" ? (
                         <div className="my-3 w-full">
-                          <label className="text-xs text-gray-500">{field.label}</label>
+                          <label className="text-xs text-gray-500">
+                            {field.label}
+                          </label>
                           <RadioGroup required={field?.required}>
                             {field?.options?.map((item, idx) => (
-                              <div key={idx} className="flex items-center space-x-4">
-                                <RadioGroupItem value={item.label} id={item.label} onClick={() => handleSelectChange(field.fieldName, item.label)} />
+                              <div
+                                key={idx}
+                                className="flex items-center space-x-4"
+                              >
+                                <RadioGroupItem
+                                  value={item.label}
+                                  id={item.label}
+                                  onClick={() =>
+                                    handleSelectChange(
+                                      field.fieldName,
+                                      item.label
+                                    )
+                                  }
+                                />
                                 <Label htmlFor={item.label}>{item.label}</Label>
                               </div>
                             ))}
@@ -196,19 +235,38 @@ const FormUi = ({
                         </div>
                       ) : field.fieldType === "checkbox" ? (
                         <div className="my-3 w-full">
-                          <label className="text-xs text-gray-500">{field?.label}</label>
+                          <label className="text-xs text-gray-500">
+                            {field?.label}
+                          </label>
                           {field?.options?.map((item, idx) => (
                             <div key={idx} className="flex gap-2 items-center">
-                              <Checkbox onCheckedChange={(v) => handleCheckboxChange(field?.label, item.label ? item.label : item, v)} />
+                              <Checkbox
+                                onCheckedChange={(v) =>
+                                  handleCheckboxChange(
+                                    field?.label,
+                                    item.label ? item.label : item,
+                                    v
+                                  )
+                                }
+                              />
                               <h2>{item.label ? item.label : item}</h2>
                             </div>
                           ))}
                         </div>
                       ) : field.fieldType === "file" ? (
                         <div className="my-3 w-full">
-                          <label className="text-xs text-gray-500">{field.label}</label>
+                          <label className="text-xs text-gray-500">
+                            {field.label}
+                          </label>
 
-                          <CldUploadWidget uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET} onSuccess={(result) => handleFileUpload(result, field.fieldName)}>
+                          <CldUploadWidget
+                            uploadPreset={
+                              process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+                            }
+                            onSuccess={(result) =>
+                              handleFileUpload(result, field.fieldName)
+                            }
+                          >
                             {({ open }) => (
                               <div className="flex items-center gap-2">
                                 <Button
@@ -224,19 +282,27 @@ const FormUi = ({
 
                                 {/* Directly Display the Uploaded File Name */}
                                 {formData[field.fieldName] && (
-                                  <span className="text-sm text-gray-600">{new URL(formData[field.fieldName]).pathname.split("/").pop()}</span>
+                                  <span className="text-sm text-gray-600">
+                                    {new URL(formData[field.fieldName]).pathname
+                                      .split("/")
+                                      .pop()}
+                                  </span>
                                 )}
                               </div>
                             )}
                           </CldUploadWidget>
 
                           {field?.required && !formData?.[field.fieldName] && (
-                            <p className="text-red-500 text-xs mt-1">This file is required.</p>
+                            <p className="text-red-500 text-xs mt-1">
+                              This file is required.
+                            </p>
                           )}
                         </div>
                       ) : (
                         <div className="my-3 w-full">
-                          <label className="text-xs text-gray-500">{field?.label}</label>
+                          <label className="text-xs text-gray-500">
+                            {field?.label}
+                          </label>
                           <Input
                             className="bg-transparent"
                             type={field?.fieldType}
@@ -249,7 +315,11 @@ const FormUi = ({
                       )}
 
                       {editable && (
-                        <FieldEdit defaultValue={field} onUpdate={(value) => onFieldUpdate(value, index)} deleteField={() => deleteField(index)} />
+                        <FieldEdit
+                          defaultValue={field}
+                          onUpdate={(value) => onFieldUpdate(value, index)}
+                          deleteField={() => deleteField(index)}
+                        />
                       )}
                     </div>
                   )}

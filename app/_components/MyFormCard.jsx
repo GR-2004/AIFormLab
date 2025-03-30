@@ -3,13 +3,10 @@ import React, { useEffect, useState } from "react";
 import { and, eq } from "drizzle-orm";
 import { toast } from "sonner";
 import { RWebShare } from "react-web-share";
-import { EllipsisVertical, FileText } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { db } from "@/config";
-import { JsonForms, userResponses } from "@/config/schema";
 import { Edit, EllipsisVertical, FileText, Share, Trash2 } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
-import { db } from "@/config";
+
 import { JsonForms, userResponses } from "@/config/schema";
 import { useRouter } from "next/navigation";
 import {
@@ -83,7 +80,7 @@ const MyFormCard = ({
 
   return (
     <div
-      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-white w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative group"
+      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-background w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative group"
       onClick={handleCardClick}
     >
       <img

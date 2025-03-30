@@ -7,18 +7,30 @@ import { EllipsisVertical, FileText } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { db } from "@/config";
 import { JsonForms, userResponses } from "@/config/schema";
+import { Edit, EllipsisVertical, FileText, Share, Trash2 } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { db } from "@/config";
+import { JsonForms, userResponses } from "@/config/schema";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 const MyFormCard = ({
   jsonForm,
   formRecord,
   refreshData,
-  onClick,
   setTotalResponses,
 }) => {
+  const router = useRouter();
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [responseCount, setResponseCount] = useState(0);
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,12 +74,17 @@ const MyFormCard = ({
       toast.error("Something went wrong");
     }
   };
+
+  const handleCardClick = () => {
+    if (activeDropdown !== formRecord.id) {
+      router.push(`/my-forms/edit-form/${formRecord.id}`);
+    }
+  };
+
   return (
     <div
-      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-background w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
+      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-white w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative group"
+      onClick={handleCardClick}
     >
       <img
         src={"./formCard-bg.svg"}
@@ -79,9 +96,49 @@ const MyFormCard = ({
         <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
           <FileText className="text-primary" />
         </div>
-        {isHovered && (
-          <EllipsisVertical className="transition-opacity duration-300 opacity-100" />
-        )}
+
+        {/* Ellipsis Icon - Visible Only on Hover */}
+        <DropdownMenu
+          open={activeDropdown === formRecord.id}
+          onOpenChange={(isOpen) =>
+            setActiveDropdown(isOpen ? formRecord.id : null)
+          }
+        >
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="icon"
+              onClick={(e) => e.stopPropagation()}
+              className={`transition-opacity focus:ring-0 ${
+                activeDropdown === formRecord.id
+                  ? "opacity-100"
+                  : "opacity-0 group-hover:opacity-100"
+              }`}
+            >
+              <EllipsisVertical className="cursor-pointer text-gray-500 hover:text-gray-700" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+            <DropdownMenuItem
+              onClick={() => toast.success("Share option clicked!")}
+            >
+              <Share className="h-4 w-4" />
+              <span>Share</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => toast.success("Rename option clicked!")}
+            >
+              <Edit className="h-4 w-4" />
+              <span>Rename</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={deleteForm}
+              className="text-red-600 focus:text-red-600"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Title & Heading */}

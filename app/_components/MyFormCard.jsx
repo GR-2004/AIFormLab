@@ -1,34 +1,41 @@
 "use client";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { and, eq } from "drizzle-orm";
 import { toast } from "sonner";
 import { RWebShare } from "react-web-share";
 import { EllipsisVertical, FileText } from "lucide-react";
-import { useUser } from '@clerk/nextjs';
-import { db } from '@/config';
-import { JsonForms, userResponses } from '@/config/schema';
+import { useUser } from "@clerk/nextjs";
+import { db } from "@/config";
+import { JsonForms, userResponses } from "@/config/schema";
 
-const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick, setTotalResponses }) => {
-    const { user } = useUser();
+const MyFormCard = ({
+  jsonForm,
+  formRecord,
+  refreshData,
+  onClick,
+  setTotalResponses,
+}) => {
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [responseCount, setResponseCount] = useState(0);
-  
-      useEffect(() => {
-          const fetchData = async () => {
-              try {
-                  const result = await db.select()
-                      .from(userResponses)
-                      .where(eq(userResponses.formRef, formRecord.id))
-                      .orderBy(userResponses.createdAt);
-                  setResponseCount(result?.length);
-                  setTotalResponses?.((prev) => prev + result?.length);
-              } catch (error) {
-                  console.error(error);
-              }
-          };
-          fetchData();
-      }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await db
+          .select()
+          .from(userResponses)
+          .where(eq(userResponses.formRef, formRecord.id))
+          .orderBy(userResponses.createdAt);
+        setResponseCount(result?.length);
+        setTotalResponses?.((prev) => prev + result?.length);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const deleteForm = async () => {
     setLoading(true);
@@ -57,7 +64,7 @@ const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick, setTotalRespon
   };
   return (
     <div
-      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-white w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative"
+      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-background w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
@@ -70,7 +77,7 @@ const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick, setTotalRespon
       {/* Top Section */}
       <div className="flex justify-between items-center w-full">
         <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-          <FileText className='text-primary' />
+          <FileText className="text-primary" />
         </div>
         {isHovered && (
           <EllipsisVertical className="transition-opacity duration-300 opacity-100" />
@@ -94,7 +101,7 @@ const MyFormCard = ({ jsonForm, formRecord, refreshData, onClick, setTotalRespon
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MyFormCard
+export default MyFormCard;

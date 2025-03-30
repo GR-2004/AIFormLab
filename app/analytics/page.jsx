@@ -37,14 +37,17 @@ const AnalyticsPage = () => {
     }
   };
 
-
   const isDark = theme === "dark";
 
   return (
-    <div className="p-6">
+    <div className="p-8 min-h-screen">
       {/* Header Section */}
       <div className="mb-8">
-        <h1 className={`text-2xl font-bold mb-2 ${isDark ? "text-white" : "text-black"}`}>
+        <h1
+          className={`text-2xl font-bold mb-2 ${
+            isDark ? "text-white" : "text-black"
+          }`}
+        >
           Welcome back!
         </h1>
         <p className="text-zinc-500">Here's an overview of your forms</p>
@@ -58,10 +61,11 @@ const AnalyticsPage = () => {
         ].map((stat, index) => (
           <div
             key={index}
-            className={`rounded-xl p-6 border ${isDark
+            className={`rounded-xl p-6 border ${
+              isDark
                 ? "bg-zinc-900 border-zinc-800 text-white"
                 : "bg-white border-gray-200 text-black"
-              }`}
+            }`}
           >
             <p className="text-zinc-500 text-sm mb-1">{stat.label}</p>
             <p className="text-2xl font-bold">{stat.value}</p>
@@ -71,18 +75,19 @@ const AnalyticsPage = () => {
 
       {/* Recent Forms Section */}
       <div
-        className={`rounded-xl p-6 border ${isDark ? "bg-zinc-900 border-zinc-800" : "bg-white border-gray-200"
-          }`}
+        className={`rounded-xl p-6 border ${
+          isDark ? "bg-zinc-900 border-zinc-800" : "bg-white border-gray-200"
+        }`}
       >
         <h2 className="text-xl font-semibold mb-4">Recent Forms</h2>
         <div className="space-y-4">
-            {formList?.map((form, index) => (
-              <FormListItemResp
-                  key={index}
-                  formRecord={form}
-                  jsonForm={JSON.parse(form.jsonform)}
-                  setTotalResponses={(value) => setTotalResponses(value)}
-              />
+          {formList?.map((form, index) => (
+            <FormListItemResp
+              key={index}
+              formRecord={form}
+              jsonForm={JSON.parse(form.jsonform)}
+              setTotalResponses={(value) => setTotalResponses(value)}
+            />
           ))}
         </div>
       </div>

@@ -59,7 +59,7 @@ const FormAnalysisPage = ({ params }) => {
   }, [params?.formId]);
 
   return (
-    <div className="p-8 flex flex-col gap-8">
+    <div className="p-8 flex flex-col gap-8 min-h-screen">
       <div className="inline-flex flex-col justify-start items-start gap-3">
         <div
           className="flex items-center gap-2 text-muted-foreground cursor-pointer hover:text-muted-foreground/200"

@@ -6,11 +6,10 @@ import { db } from "../../config";
 import { JsonForms } from "../../config/schema";
 import { desc, eq } from "drizzle-orm";
 import { Activity, FileText, Loader, Search, UsersRound } from "lucide-react";
-import FormListItemResp from "./_components/FormListItemResp";
-import Image from "next/image";
 import MyFormCard from "../_components/MyFormCard";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import ResponseStatItem from "./_components/ResponseStatItem";
 
 const ResponsesPage = () => {
   const router = useRouter();
@@ -59,18 +58,18 @@ useEffect(() => {
 }, [searchQuery, formList]);
 
   return (
-    <div className="p-8 flex flex-col gap-8">
-      <div className="flex items-center justify-between w-full gap-4">
+    <div className="p-4 md:p-8 flex flex-col gap-6 min-h-screen overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between w-full gap-4">
         {/* Left Section: Heading & Description */}
         <div className="flex flex-col gap-1">
-          <h2 className="font-bold text-3xl">Responses</h2>
+          <h2 className="font-bold text-2xl md:text-3xl">Responses</h2>
           <p className="text-gray-600 text-sm">
             View and manage your responses.
           </p>
         </div>
 
         {/* Right Section: Search Input */}
-        <div className="relative w-80">
+        <div className="relative w-80 ">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
           <Input
             className="pl-10 pr-4 py-2 w-full border rounded-md text-sm focus:ring-2 focus:ring-blue-500"
@@ -91,44 +90,24 @@ useEffect(() => {
         </div>
       ) : (
         <>
-          <div className="flex items-center gap-24">
-            <div className="flex p-4 gap-3 border rounded-xl w-full">
-              <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-                <FileText />
-              </div>
-              <div>
-                <p className="text-sm font-medium break-words text-muted-foreground">
-                  Total forms
-                </p>
-                <h1 className="text-xl font-semibold break-words">
-                  {totalForms}
-                </h1>
-              </div>
-            </div>
-            <div className="flex p-4 gap-3 border rounded-xl w-full">
-              <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-                <UsersRound />
-              </div>
-              <div>
-                <p className="text-sm font-medium break-words text-muted-foreground">
-                  Total Responses
-                </p>
-                <h1 className="text-xl font-semibold break-words">
-                  {totalResponses}
-                </h1>
-              </div>
-            </div>
-            <div className="flex p-4 gap-3 border rounded-xl w-full">
-              <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
-                <Activity />
-              </div>
-              <div>
-                <p className="text-sm font-medium break-words text-muted-foreground">
-                  Active Forms
-                </p>
-                <h1 className="text-xl font-semibold break-words">240</h1>
-              </div>
-            </div>
+          <div className="flex flex-col gap-4 md:flex-row md:gap-6 md:items-center">
+            <ResponseStatItem
+              label={"Total Forms"}
+              value={totalForms}
+              icon={FileText}
+            />
+
+            <ResponseStatItem
+              label={"Total Responses"}
+              value={totalForms}
+              icon={UsersRound}
+            />
+
+            <ResponseStatItem
+              label={"Active Forms"}
+              value={totalForms}
+              icon={Activity}
+            />
           </div>
           <div className="my-5 grid grid-cols-2 gap-5 lg:grid-cols-4 ">
             {filteredForms.map((form, index) => (

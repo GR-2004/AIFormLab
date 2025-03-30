@@ -18,7 +18,7 @@ import { useUser } from "@clerk/nextjs";
 import TemplateCard from "@/app/_components/TemplateCard";
 // import TemplateCard from "./TemplateCard";
 
-const TemplateList = ({columns}) => {
+const TemplateList = ({columns, searchQuery}) => {
   const [templateList, setTemplateList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [previewForm, setPreviewForm] = useState(null);
@@ -45,7 +45,13 @@ const TemplateList = ({columns}) => {
     }
     setLoading(false);
   };
+  // search logic
 
+   const trimmedQuery = searchQuery?.trim().toLowerCase();
+    const filteredTemplates = templateList.filter((template) => {
+    const formTitle = JSON.parse(template.jsonform)?.formTitle || "";
+    return formTitle.toLowerCase().includes(trimmedQuery);
+  });
   const openPreview = (template) => {
     setPreviewForm(template);
     setIsPreviewOpen(true);
@@ -90,7 +96,7 @@ const TemplateList = ({columns}) => {
         <div className="flex justify-center items-center h-20">
           <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
         </div>
-      ) : templateList.length === 0 ? (
+      ) : filteredTemplates.length === 0 ? (
         <div className="text-center text-gray-500">No templates found.</div>
       ) : (
         <div
@@ -99,7 +105,7 @@ const TemplateList = ({columns}) => {
             gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
           }}
         >
-          {templateList.map((template, index) => (
+          {filteredTemplates.map((template, index) => (
             <TemplateCard
               template={template}
               key={index}

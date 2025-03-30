@@ -40,7 +40,7 @@ const Templates = () => {
             />
         </div>
       </div>
-      <TemplateList columns={4} />
+      <TemplateList columns={4} searchQuery={searchQuery} />
     </div>
   );
 };

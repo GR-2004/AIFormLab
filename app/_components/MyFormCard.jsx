@@ -42,7 +42,7 @@ const MyFormCard = ({
       }
     };
     fetchData();
-  }, [formRecord.id, setTotalResponses]);
+  }, []);
 
   const deleteForm = async () => {
     setLoading(true);

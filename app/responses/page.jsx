@@ -20,6 +20,7 @@ const ResponsesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [totalResponses, setTotalResponses] = useState(0);
   const [totalForms, setTotalForms] = useState(0);
+   const [filteredForms, setFilteredForms] = useState([]);
   const [activeForms, setActiveForms] = useState(0);
 
   useEffect(() => {
@@ -42,6 +43,20 @@ const ResponsesPage = () => {
       setLoading(false);
     }
   };
+
+useEffect(() => {
+  if (!searchQuery.trim()) {
+    setFilteredForms(formList);
+    return;
+  }
+
+  const filtered = formList.filter((form) => {
+    const formTitle = JSON.parse(form.jsonform)?.formTitle || "";
+    return formTitle.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  setFilteredForms(filtered);
+}, [searchQuery, formList]);
 
   return (
     <div className="p-8 flex flex-col gap-8">
@@ -116,7 +131,7 @@ const ResponsesPage = () => {
             </div>
           </div>
           <div className="my-5 grid grid-cols-2 gap-5 lg:grid-cols-4 ">
-            {formList.map((form, index) => (
+            {filteredForms.map((form, index) => (
               // <FormListItemResp
               //   key={index}
               //   formRecord={form}

@@ -4,6 +4,7 @@ import CreateForm from "./_components/CreateForm";
 import FormList from "./_components/FormList";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 export default function DashboardPage() {
   const router = useRouter();

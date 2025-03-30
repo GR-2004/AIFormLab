@@ -12,9 +12,11 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { Download, MoveLeft } from "lucide-react";
+import { ArrowLeft, Download, MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+
+import EmptyStatePlaceholder from "app/_components/EmptyState";
 
 const FormAnalysisPage = ({ params }) => {
   const router = useRouter();
@@ -59,39 +61,42 @@ const FormAnalysisPage = ({ params }) => {
   }, [params?.formId]);
 
   return (
-    <div className="p-8 flex flex-col gap-8 min-h-screen">
+    <div className="p-4 md:p-8 flex flex-col gap-8 min-h-screen">
       <div className="inline-flex flex-col justify-start items-start gap-3">
         <div
           className="flex items-center gap-2 text-muted-foreground cursor-pointer hover:text-muted-foreground/200"
           onClick={() => router.push("/responses")}
         >
-          <MoveLeft />
-          <span className="text-base font-medium break-words">
+          <ArrowLeft />
+          <span className="text-sm font-medium break-words">
             Back to Responses
           </span>
         </div>
-        <div className="flex justify-between items-center gap-8 w-full">
-          <div className="w-full">
-            <h1 className="text-3xl font-semibold break-words">
-              Cricket Registration form
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 md:gap-6 w-full">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-semibold">
+              Cricket Registration Form
             </h1>
-            <p className="text-base font-medium break-words text-muted-foreground">
-              Register for cricket tournament
+            <p className="text-sm font-medium text-muted-foreground">
+              Register for the cricket tournament
             </p>
           </div>
-          <div>
-            <Button>
-              <Download />
-              Export Response
-            </Button>
-          </div>
+          <Button className="w-full md:w-auto flex items-center gap-2">
+            <Download />
+            Export Response
+          </Button>
         </div>
       </div>
 
       {loading ? (
         <p className="text-gray-600 dark:text-gray-400">Loading responses...</p>
       ) : responses.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400">No responses yet.</p>
+        <EmptyStatePlaceholder
+          title={"No Responses Found"}
+          description={
+            "Please share this form to users to get their responses."
+          }
+        />
       ) : (
         <>
           {/* Table */}

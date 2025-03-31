@@ -7,24 +7,28 @@ import Image from "next/image";
 import Link from "next/link";
 import FormUi from "../../my-forms/edit-form/_components/FormUi";
 import { Loader } from "lucide-react";
+import { useParams } from "next/navigation";
 
-const LiveAiForm = ({ params }) => {
+const LiveAiForm = () => {
+    const params = useParams();
     const [record, setRecord] = useState(null);
     const [jsonForm, setJsonForm] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        params && GetFormData();
-    }, [params]);
+        if (params?.formId) {
+            GetFormData(params.formId); // Pass formId explicitly
+        }
+    }, [params?.formId]);
 
-    const GetFormData = async () => {
+    const GetFormData = async (formId) => {
         setLoading(true);
         try {
             const result = await db
                 .select()
                 .from(JsonForms)
-                .where(eq(JsonForms.id, Number(params?.formId)));
+                .where(eq(JsonForms.id, Number(formId)));
             setRecord(result[0]);
             setJsonForm(JSON.parse(result[0].jsonform));
             setLoading(false);

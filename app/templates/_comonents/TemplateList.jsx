@@ -16,6 +16,7 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import TemplateCard from "@/app/_components/TemplateCard";
+import EmptyStatePlaceholder from "@/app/_components/EmptyStatePlaceholder";
 // import TemplateCard from "./TemplateCard";
 
 const TemplateList = ({ columns, searchQuery }) => {
@@ -99,7 +100,14 @@ const TemplateList = ({ columns, searchQuery }) => {
           <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
         </div>
       ) : filteredTemplates.length === 0 ? (
-        <div className="text-center text-gray-500">No templates found.</div>
+        <EmptyStatePlaceholder
+          title="No templates found"
+          description={
+            searchQuery
+              ? `No templates matching "${searchQuery}"`
+              : "No templates available at the moment"
+          }
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredTemplates.map((template, index) => (

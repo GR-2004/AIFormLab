@@ -1,32 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { db } from "@/config";
-import { JsonForms } from "@/config/schema";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { desc, eq } from "drizzle-orm";
 import { Search, Loader } from "lucide-react";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
 import TemplateList from "./_comonents/TemplateList";
-import Image from "next/image";
-import EmptyStatePlaceholder from "../_components/EmptyStatePlaceholder";
 
 const Templates = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [templates, setTemplates] = useState([]);
-
-  // Filter templates based on search
-  const filteredTemplates = templates.filter((template) =>
-    template.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <section className="max-w-[1376px] mx-auto p-8 flex flex-col gap-8 min-h-screen">
@@ -47,18 +28,7 @@ const Templates = () => {
           />
         </div>
       </div>
-      {filteredTemplates.length === 0 ? (
-        <EmptyStatePlaceholder
-          title="No templates found"
-          description={
-            searchQuery
-              ? `No templates matching "${searchQuery}"`
-              : "No templates available at the moment"
-          }
-        />
-      ) : (
-        <TemplateList columns={4} searchQuery={searchQuery} />
-      )}
+      <TemplateList columns={4} searchQuery={searchQuery} />
     </section>
   );
 };

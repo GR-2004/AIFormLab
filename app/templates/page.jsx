@@ -16,10 +16,17 @@ import {
 } from "@/components/ui/card";
 import TemplateList from "./_comonents/TemplateList";
 import Image from "next/image";
+import EmptyStatePlaceholder from "../_components/EmptyStatePlaceholder";
 
 const Templates = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [templates, setTemplates] = useState([]);
+
+  // Filter templates based on search
+  const filteredTemplates = templates.filter((template) =>
+    template.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <section className="max-w-[1376px] mx-auto p-8 flex flex-col gap-8 min-h-screen">
@@ -40,7 +47,18 @@ const Templates = () => {
           />
         </div>
       </div>
-      <TemplateList columns={4} searchQuery={searchQuery} />
+      {filteredTemplates.length === 0 ? (
+        <EmptyStatePlaceholder
+          title="No templates found"
+          description={
+            searchQuery
+              ? `No templates matching "${searchQuery}"`
+              : "No templates available at the moment"
+          }
+        />
+      ) : (
+        <TemplateList columns={4} searchQuery={searchQuery} />
+      )}
     </section>
   );
 };

@@ -160,7 +160,7 @@ const FormUi = ({
       }}
     >
       <h2 className="font-bold text-center text-2xl">{jsonForm?.formTitle}</h2>
-      <h3 className="text-sm text-gray-500 mb-5 text-center">
+      <h3 className="text-sm text-gray-500 mb-4 text-center">
         {jsonForm?.formHeading}
       </h3>
       <DragDropContext onDragEnd={onDragEnd}>

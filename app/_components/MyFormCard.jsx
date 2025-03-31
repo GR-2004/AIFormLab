@@ -110,7 +110,6 @@ const updateFormTitle = async () => {
     refreshData();
     setRenameModalOpen(false);
   } catch (error) {
-    // console.error("Error renaming form:", error);
     toast.error("Something went wrong");
   }
 };

@@ -62,7 +62,7 @@ const Controller = ({
   };
 
   return (
-    <div className="bg-muted/20">
+    <div className="hidden md:block bg-muted/20 p-6 rounded-xl border h-fit">
       {/* theme selection controller */}
       <h2 className="my-1">Select Theme</h2>
       <Select onValueChange={(value) => selectedTheme(value)}>
@@ -168,16 +168,15 @@ const Controller = ({
       {/* template controller */}
       <div className="mt-10 flex items-center gap-2">
         <div className="flex flex-col gap-[2px]">
-          <h2 className="text-base font-medium break-words">Make Public Template</h2>
+          <h2 className="text-base font-medium break-words">
+            Make Public Template
+          </h2>
           <p className="text-muted-foreground text-sm break-words">
             Allow others to use this as a starting point while keeping your
             original content unchanged.
           </p>
         </div>
-        <Switch
-          checked={isTemplate}
-          onCheckedChange={() => setIsTemplate()}
-        />
+        <Switch checked={isTemplate} onCheckedChange={() => setIsTemplate()} />
       </div>
       {/* for social auth check */}
       <div className="mt-10 flex items-center gap-2">

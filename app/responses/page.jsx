@@ -19,8 +19,8 @@ const ResponsesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [totalResponses, setTotalResponses] = useState(0);
   const [totalForms, setTotalForms] = useState(0);
-   const [filteredForms, setFilteredForms] = useState([]);
   const [activeForms, setActiveForms] = useState(0);
+  const [filteredForms, setFilteredForms] = useState([]);
 
   useEffect(() => {
     user && GetFormList();
@@ -99,13 +99,13 @@ useEffect(() => {
 
             <ResponseStatItem
               label={"Total Responses"}
-              value={totalForms}
+              value={totalResponses}
               icon={UsersRound}
             />
 
             <ResponseStatItem
               label={"Active Forms"}
-              value={totalForms}
+              value={activeForms}
               icon={Activity}
             />
           </div>

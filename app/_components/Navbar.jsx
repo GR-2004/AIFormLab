@@ -19,8 +19,8 @@ const userMenuList = [
   { id: 0, name: "Create", path: "/create" },
   { id: 1, name: "My Forms", path: "/my-forms" },
   { id: 2, name: "Responses", path: "/responses" },
-  { id: 3, name: "Analytics", path: "/analytics" },
-  { id: 4, name: "Templates", path: "/templates" },
+  { id: 3, name: "Templates", path: "/templates" },
+  // { id: 3, name: "Analytics", path: "/analytics" },
 ];
 
 export const Navbar = () => {

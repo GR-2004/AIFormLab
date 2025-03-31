@@ -99,12 +99,7 @@ const TemplateList = ({columns, searchQuery}) => {
       ) : filteredTemplates.length === 0 ? (
         <div className="text-center text-gray-500">No templates found.</div>
       ) : (
-        <div
-          className={`grid gap-6 justify-center`}
-          style={{
-            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredTemplates.map((template, index) => (
             <TemplateCard
               template={template}

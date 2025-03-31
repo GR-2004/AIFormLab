@@ -205,6 +205,11 @@ const EditForm = ({ params }) => {
                   updateControllerFields();
                 }}
                 addField={(field) => addField(field)}
+                isTemplate={isTemplate}
+                setIsTemplate={() => {
+                  setIsTemplate((prev) => !prev);
+                  updateControllerFields();
+                }}
               />
               <div
                 className="md:col-span-2 rounded-2xl p-5 flex items-center justify-center border"

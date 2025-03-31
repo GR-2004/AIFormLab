@@ -4,9 +4,19 @@ import { and, eq } from "drizzle-orm";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { db } from "@/config";
-import { Edit, EllipsisVertical, FileText, Share, Trash2 } from "lucide-react";
+import { Edit, EllipsisVertical, FileText, Share, Trash } from "lucide-react";
 import { JsonForms, userResponses } from "@/config/schema";
 import { useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 import {
   DropdownMenu,
@@ -15,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { RWebShare } from "react-web-share";
 
 const MyFormCard = ({
   jsonForm,
@@ -27,6 +38,7 @@ const MyFormCard = ({
   const [loading, setLoading] = useState(false);
   const [responseCount, setResponseCount] = useState(0);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +89,10 @@ const MyFormCard = ({
     }
   };
 
+  const handleShareSuccess = () => {
+    toast.success("Shared successfully!");
+  };
+
   return (
     <div
       className="border rounded-lg overflow-hidden flex flex-col items-center gap-4 p-5 bg-background w-full h-full min-h-[220px] hover:bg-muted/20 cursor-pointer transition-all relative group"
@@ -114,25 +130,55 @@ const MyFormCard = ({
               <EllipsisVertical className="cursor-pointer text-gray-500 hover:text-gray-700" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-            <DropdownMenuItem
-              onClick={() => toast.success("Share option clicked!")}
-            >
-              <Share className="h-4 w-4" />
-              <span>Share</span>
+          <DropdownMenuContent
+            align="end"
+            onClick={(e) => e.stopPropagation()}
+            className="w-56 p-1"
+          >
+            <DropdownMenuItem className="flex items-center p-2 cursor-pointer hover:bg-muted focus:bg-muted rounded-md">
+              <RWebShare
+                data={{
+                  text:
+                    jsonForm?.formHeading +
+                    " Build your form in seconds using AI Builder",
+                  url:
+                    process.env.NEXT_PUBLIC_BASE_URL +
+                    "/aiform/" +
+                    formRecord?.id,
+                  title: jsonForm?.formTitle || "Share Form",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                onShareWindowClose={handleShareSuccess}
+              >
+                <div className="flex items-center w-full">
+                  <Share className="h-4 w-4 mr-5 text-muted-foreground" />
+                  <span className="font-medium">Share</span>
+                </div>
+              </RWebShare>
             </DropdownMenuItem>
+
             <DropdownMenuItem
-              onClick={() => toast.success("Rename option clicked!")}
+              onClick={(e) => {
+                e.stopPropagation();
+                toast.success("Rename option clicked!");
+              }}
+              className="flex items-center p-2 cursor-pointer hover:bg-muted focus:bg-muted rounded-md"
             >
-              <Edit className="h-4 w-4" />
-              <span>Rename</span>
+              <Edit className="h-4 w-4 mr-3 text-muted-foreground" />
+              <span className="font-medium">Rename</span>
             </DropdownMenuItem>
+
             <DropdownMenuItem
-              onClick={deleteForm}
-              className="text-red-600 focus:text-red-600"
+              onClick={(e) => {
+                e.stopPropagation();
+                setAlertOpen(true);
+              }}
+              className="flex items-center p-2 cursor-pointer hover:bg-muted focus:bg-muted rounded-md"
             >
-              <Trash2 className="h-4 w-4" />
-              <span>Delete</span>
+              <Trash className="h-4 w-4 mr-3 text-red-500" />
+              <span className="font-medium text-red-500">Delete</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -154,6 +200,40 @@ const MyFormCard = ({
           {responseCount} Responses
         </div>
       </div>
+
+      {/* Alert Dialog */}
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent className="bg-white dark:bg-gray-900">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-black dark:text-white">
+              Are you absolutely sure?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600 dark:text-gray-300">
+              This action cannot be undone. This will permanently delete your
+              form and remove responses from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              onClick={(e) => {
+                e.stopPropagation();
+                setAlertOpen(false);
+              }}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteForm();
+                setAlertOpen(false);
+              }}
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

@@ -19,8 +19,8 @@ const ResponsesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [totalResponses, setTotalResponses] = useState(0);
   const [totalForms, setTotalForms] = useState(0);
-   const [filteredForms, setFilteredForms] = useState([]);
   const [activeForms, setActiveForms] = useState(0);
+  const [filteredForms, setFilteredForms] = useState([]);
 
   useEffect(() => {
     user && GetFormList();
@@ -58,7 +58,7 @@ useEffect(() => {
 }, [searchQuery, formList]);
 
   return (
-    <div className="p-4 md:p-8 flex flex-col gap-6 min-h-screen overflow-hidden">
+    <section className="max-w-[1376px] mx-auto p-4 md:p-8 flex flex-col gap-6 min-h-screen overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-center justify-between w-full gap-4">
         {/* Left Section: Heading & Description */}
         <div className="flex flex-col gap-1">
@@ -99,13 +99,13 @@ useEffect(() => {
 
             <ResponseStatItem
               label={"Total Responses"}
-              value={totalForms}
+              value={totalResponses}
               icon={UsersRound}
             />
 
             <ResponseStatItem
               label={"Active Forms"}
-              value={totalForms}
+              value={activeForms}
               icon={Activity}
             />
           </div>
@@ -127,7 +127,7 @@ useEffect(() => {
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 

@@ -19,8 +19,8 @@ const userMenuList = [
   { id: 0, name: "Create", path: "/create" },
   { id: 1, name: "My Forms", path: "/my-forms" },
   { id: 2, name: "Responses", path: "/responses" },
-  { id: 3, name: "Analytics", path: "/analytics" },
-  { id: 4, name: "Templates", path: "/templates" },
+  { id: 3, name: "Templates", path: "/templates" },
+  // { id: 3, name: "Analytics", path: "/analytics" },
 ];
 
 export const Navbar = () => {
@@ -40,140 +40,41 @@ export const Navbar = () => {
 
   return (
     !path.includes("aiform") && (
-      <nav className="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-4 border-b bg-background h-18">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/">
-            <Image
-              src={
-                currentTheme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"
-              }
-              width={118}
-              height={36}
-              alt="logo"
-              priority
-            />
-          </Link>
+      <nav className="w-full fixed top-0 left-0 z-50 border-b bg-background h-18 ">
+        <div className="max-w-[1376px] mx-auto w-full px-4 md:px-8 py-4 ">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/">
+              <Image
+                src={
+                  currentTheme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"
+                }
+                width={118}
+                height={36}
+                alt="logo"
+                priority
+              />
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
-            {isSignedIn ? (
-              <>
-                {userMenuList.map((menu) => (
-                  <Link
-                    key={menu.id}
-                    href={menu.path}
-                    className={`text-sm font-semibold text-muted-foreground hover:text-foreground ${
-                      path === menu.path && "text-primary"
-                    }`}
-                  >
-                    {menu.name}
-                  </Link>
-                ))}
-                <Button variant="outline">Request a feature</Button>
-                <UserButton
-                  appearance={{ elements: { avatarBox: "w-9 h-9" } }}
-                />
-              </>
-            ) : (
-              <>
-                {publicMenuList.map((menu) => (
-                  <Link
-                    key={menu.id}
-                    href={menu.path}
-                    className="text-sm font-semibold text-muted-foreground hover:text-foreground"
-                  >
-                    {menu.name}
-                  </Link>
-                ))}
-                <SignInButton>
-                  <Button>Sign in</Button>
-                </SignInButton>
-                <SignUpButton>
-                  <Button variant="outline">Sign up</Button>
-                </SignUpButton>
-              </>
-            )}
-
-            {/* Theme Toggle (Desktop) */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() =>
-                setTheme(currentTheme === "dark" ? "light" : "dark")
-              }
-              className="rounded-full"
-            >
-              {currentTheme === "dark" ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-4">
-            {/* Theme Toggle (Mobile) */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() =>
-                setTheme(currentTheme === "dark" ? "light" : "dark")
-              }
-              className="rounded-full"
-            >
-              {currentTheme === "dark" ? (
-                <Sun className="w-5 h-5" />
-              ) : (
-                <Moon className="w-5 h-5" />
-              )}
-            </Button>
-
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setIsOpen(!isOpen)}
-              className="rounded-full"
-            >
-              {isOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </Button>
-
-            {isSignedIn && (
-              <UserButton appearance={{ elements: { avatarBox: "w-9 h-9" } }} />
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Navigation Drawer */}
-        {isOpen && (
-          <div className="fixed z-40" onClick={() => setIsOpen(false)}>
-            <div className="fixed top-[69px] h-lvh left-1/2 -translate-x-1/2 w-full bg-background shadow-lg px-6 py-8 flex flex-col items-center gap-4 z-50">
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-6">
               {isSignedIn ? (
                 <>
                   {userMenuList.map((menu) => (
                     <Link
                       key={menu.id}
                       href={menu.path}
-                      className="text-lg font-semibold text-muted-foreground hover:text-foreground"
-                      onClick={() => setIsOpen(false)}
+                      className={`text-sm font-semibold text-muted-foreground hover:text-foreground ${
+                        path === menu.path && "text-primary"
+                      }`}
                     >
                       {menu.name}
                     </Link>
                   ))}
-                  <div className="w-full py-4">
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Request a feature
-                    </Button>
-                  </div>
+                  <Button variant="outline">Request a feature</Button>
+                  <UserButton
+                    appearance={{ elements: { avatarBox: "w-9 h-9" } }}
+                  />
                 </>
               ) : (
                 <>
@@ -182,30 +83,135 @@ export const Navbar = () => {
                       key={menu.id}
                       href={menu.path}
                       className="text-sm font-semibold text-muted-foreground hover:text-foreground"
-                      onClick={() => setIsOpen(false)}
                     >
                       {menu.name}
                     </Link>
                   ))}
-
-                  <div className="flex flex-col gap-4 w-full">
-                    <SignInButton>
-                      <Button onClick={() => setIsOpen(false)}>Sign in</Button>
-                    </SignInButton>
-                    <SignUpButton>
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Sign up
-                      </Button>
-                    </SignUpButton>
-                  </div>
+                  <SignInButton>
+                    <Button>Sign in</Button>
+                  </SignInButton>
+                  <SignUpButton>
+                    <Button variant="outline">Sign up</Button>
+                  </SignUpButton>
                 </>
+              )}
+
+              {/* Theme Toggle (Desktop) */}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() =>
+                  setTheme(currentTheme === "dark" ? "light" : "dark")
+                }
+                className="rounded-full"
+              >
+                {currentTheme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex items-center gap-4">
+              {/* Theme Toggle (Mobile) */}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() =>
+                  setTheme(currentTheme === "dark" ? "light" : "dark")
+                }
+                className="rounded-full"
+              >
+                {currentTheme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setIsOpen(!isOpen)}
+                className="rounded-full"
+              >
+                {isOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </Button>
+
+              {isSignedIn && (
+                <UserButton
+                  appearance={{ elements: { avatarBox: "w-9 h-9" } }}
+                />
               )}
             </div>
           </div>
-        )}
+
+          {/* Mobile Navigation Drawer */}
+          {isOpen && (
+            <div className="fixed z-40" onClick={() => setIsOpen(false)}>
+              <div className="fixed top-[69px] h-lvh left-1/2 -translate-x-1/2 w-full bg-background shadow-lg px-6 py-8 flex flex-col items-center gap-4 z-50">
+                {isSignedIn ? (
+                  <>
+                    {userMenuList.map((menu) => (
+                      <Link
+                        key={menu.id}
+                        href={menu.path}
+                        className="text-lg font-semibold text-muted-foreground hover:text-foreground"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {menu.name}
+                      </Link>
+                    ))}
+                    <div className="w-full py-4">
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Request a feature
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {publicMenuList.map((menu) => (
+                      <Link
+                        key={menu.id}
+                        href={menu.path}
+                        className="text-sm font-semibold text-muted-foreground hover:text-foreground"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {menu.name}
+                      </Link>
+                    ))}
+
+                    <div className="flex flex-col gap-4 w-full">
+                      <SignInButton>
+                        <Button onClick={() => setIsOpen(false)}>
+                          Sign in
+                        </Button>
+                      </SignInButton>
+                      <SignUpButton>
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          Sign up
+                        </Button>
+                      </SignUpButton>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </nav>
     )
   );

@@ -22,7 +22,7 @@ const Templates = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="p-8 flex flex-col gap-8 min-h-screen">
+    <section className="max-w-[1376px] mx-auto p-8 flex flex-col gap-8 min-h-screen">
       <div className="flex items-center w-full gap-8">
         <div className="w-full inline-flex flex-col justify-start items-start gap-1">
           <h1 className="text-3xl font-semibold break-words">Templates</h1>
@@ -41,7 +41,7 @@ const Templates = () => {
         </div>
       </div>
       <TemplateList columns={4} searchQuery={searchQuery} />
-    </div>
+    </section>
   );
 };
 

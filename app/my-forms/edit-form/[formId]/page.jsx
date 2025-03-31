@@ -5,13 +5,20 @@ import { JsonForms } from "../../../../config/schema";
 import { and, eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowLeft, Loader, Share2, SquareArrowOutUpRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Loader,
+  Monitor,
+  Share2,
+  SquareArrowOutUpRight,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "../../../../components/ui/button";
 import { RWebShare } from "react-web-share";
 import FormUi from "../_components/FormUi";
 import { toast } from "sonner";
 import Controller from "../_components/Controller";
+import { ShareButton } from "@/app/_components/ShareButton";
 
 const EditForm = ({ params }) => {
   const { user } = useUser();
@@ -63,6 +70,8 @@ const EditForm = ({ params }) => {
       updateJsonFormInDb();
     }
   }, [updateTrigger]);
+
+  const formUrl = process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + record?.id;
 
   const toCamelCase = (str) => {
     return str
@@ -131,63 +140,53 @@ const EditForm = ({ params }) => {
   };
 
   return (
-    <div className="p-6 bg-background min-h-screen">
+    <section className="max-w-[1376px] mx-auto p-4 md:p-8 bg-background min-h-screen">
       {loading ? (
         <div className="flex justify-center items-center min-h-screen">
           <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
         </div>
       ) : (
         <>
-          <div className="md:flex md:items-center md:justify-between">
-            <h2
-              onClick={() => router.back()}
-              className="flex gap-2 items-center my-5 cursor-pointer hover:font-semibold transition-all text-foreground"
-            >
-              <ArrowLeft /> Back
-            </h2>
-            {/* Controls */}
-            <div className="flex items-center justify-between gap-2 mb-4 md:mb-0">
-              <Link href={`/aiform/${record?.id}`} target="_blank">
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 border-gray-300 dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
-                >
-                  <SquareArrowOutUpRight className="h-5 w-5" />
-                  Live Preview
-                </Button>
-              </Link>
+          <div className="flex flex-col gap-4 md:gap-6 w-full">
+            <div className="flex flex-col gap-4 md:gap-6 md:flex-row md:items-center md:justify-between">
+              <div
+                className="flex items-center gap-2 text-muted-foreground cursor-pointer hover:text-muted-foreground/200"
+                onClick={() => router.push("/my-forms")}
+              >
+                <ArrowLeft />
+                <span className="text-sm font-medium break-words">Back</span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <Link href={`/aiform/${record?.id}`} target="_blank">
+                  <Button variant="outline" className="flex items-center">
+                    <SquareArrowOutUpRight className="h-5 w-5" />
+                    Live Preview
+                  </Button>
+                </Link>
 
-              {/* Web Share */}
-              <RWebShare
-                data={{
-                  text:
-                    jsonForm?.formHeading +
-                    " Build your form in seconds using AI Builder",
-                  url:
-                    process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + record?.id,
-                  title: jsonForm?.formTitle,
-                }}
-                disableNative={true}
-                onClick={() => console.log("shared successfully!")}
-              >
-                <Button className="flex items-center gap-2 bg-gray-700 hover:bg-gray-950 dark:bg-gray-600 dark:hover:bg-gray-800 dark:text-white">
-                  <Share2 className="h-5 w-5" /> Share
-                </Button>
-              </RWebShare>
-              {/* Make it a template button */}
-              <Button
-                variant={isTemplate ? "destructive" : "default"}
-                onClick={() => {
-                  setIsTemplate((prev) => !prev);
-                  updateControllerFields();
-                }}
-              >
-                {isTemplate ? "Remove from Templates" : "Make it a Template"}
-              </Button>
+                <ShareButton
+                  title="Share Form"
+                  url={formUrl}
+                  buttonText="Share Now"
+                />
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="p-5 border rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
+
+            <div className="md:hidden p-6 bg-muted/40 flex flex-col items-center border rounded-xl text-center">
+              <div className="max-w-sm">
+                <div className="p-4 bg-primary/20 rounded-md mb-4 inline-flex">
+                  <Monitor className="text-primary w-9 h-9" />
+                </div>
+
+                <h2 className="text-foreground text-xl font-semibold">
+                  To Edit this form Use Desktop
+                </h2>
+                <p className="text-muted-foreground">
+                  Editing functionality is not available in Mobile
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <Controller
                 selectedTheme={(value) => {
                   setSelectedTheme(value);
@@ -207,28 +206,28 @@ const EditForm = ({ params }) => {
                 }}
                 addField={(field) => addField(field)}
               />
-            </div>
-            <div
-              className="md:col-span-2 border rounded-lg p-5 flex items-center justify-center dark:border-gray-700"
-              style={{ background: selectedBackground }}
-            >
-              <FormUi
-                jsonForm={jsonForm}
-                selectedTheme={selectedTheme}
-                selectedStyle={selectedStyle}
-                onFieldUpdate={onFieldUpdate}
-                deleteField={(index) => deleteField(index)}
-                formId={record?.id}
-                setJsonForm={(val) => {
-                  setJsonForm(val);
-                  setUpdateTrigger(Date.now());
-                }}
-              />
+              <div
+                className="md:col-span-2 rounded-2xl p-5 flex items-center justify-center border"
+                style={{ background: selectedBackground }}
+              >
+                <FormUi
+                  jsonForm={jsonForm}
+                  selectedTheme={selectedTheme}
+                  selectedStyle={selectedStyle}
+                  onFieldUpdate={onFieldUpdate}
+                  deleteField={(index) => deleteField(index)}
+                  formId={record?.id}
+                  setJsonForm={(val) => {
+                    setJsonForm(val);
+                    setUpdateTrigger(Date.now());
+                  }}
+                />
+              </div>
             </div>
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 

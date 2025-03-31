@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -9,13 +9,19 @@ import { db } from "@/config";
 import { JsonForms } from "@/config/schema";
 import { AiChatSession } from "@/config/AiModal";
 import moment from "moment";
+import ReactConfetti from "react-confetti";
 
-const PromptInput = () => {
-  const [prompt, setPrompt] = useState("");
+const PromptInput = ({ prompt: initialPrompt = "" }) => {
+  const [prompt, setPrompt] = useState(initialPrompt);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const maxLength = 500;
   const { user } = useUser();
   const router = useRouter();
+
+  useEffect(() => {
+    setPrompt(initialPrompt);
+  }, [initialPrompt]);
 
   const PROMPT =
     ",On Basis of description create JSON form with formTitle, formHeading along with fieldName, FieldTitle, FieldType, Placeholder, label, required fields, and checkbox and select field type options will be in array only and in JSON format";
@@ -46,7 +52,11 @@ const PromptInput = () => {
           .returning({ id: JsonForms.id });
 
         if (resp[0]?.id) {
-          router.push("/my-forms/edit-form/" + resp[0].id);
+          setShowConfetti(true);
+          // Wait for 2 seconds to show confetti before redirecting
+          setTimeout(() => {
+            router.push("/my-forms/edit-form/" + resp[0].id);
+          }, 2000);
         }
       }
     } catch (error) {
@@ -58,6 +68,16 @@ const PromptInput = () => {
 
   return (
     <div className="w-full">
+      {showConfetti && (
+        <ReactConfetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={400}
+          gravity={0.3}
+          onConfettiComplete={() => setShowConfetti(false)}
+        />
+      )}
       <div className="bg-primary px-1 pb-1 pt-4 rounded-2xl">
         <div className="p-4 rounded-xl bg-background">
           <div className="relative">

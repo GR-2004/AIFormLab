@@ -9,23 +9,26 @@ import FormUi from "../../my-forms/edit-form/_components/FormUi";
 import { Loader } from "lucide-react";
 import { useParams } from "next/navigation";
 
-const LiveAiForm = ({ params }) => {
+const LiveAiForm = () => {
+  const params = useParams();
   const [record, setRecord] = useState(null);
   const [jsonForm, setJsonForm] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    params && GetFormData();
-  }, [params]);
+    if (params?.formId) {
+      GetFormData(params.formId); // Pass formId explicitly
+    }
+  }, [params?.formId]);
 
-  const GetFormData = async () => {
+  const GetFormData = async (formId) => {
     setLoading(true);
     try {
       const result = await db
         .select()
         .from(JsonForms)
-        .where(eq(JsonForms.id, Number(params?.formId)));
+        .where(eq(JsonForms.id, Number(formId)));
       setRecord(result[0]);
       setJsonForm(JSON.parse(result[0].jsonform));
       setLoading(false);
@@ -37,7 +40,7 @@ const LiveAiForm = ({ params }) => {
 
   return (
     <div
-      className="p-4 md:p-6 max-w-3xl mx-auto min-h-screen"
+      className="p-4 md:p-6 mx-auto min-h-screen"
       style={{
         background: record?.background,
       }}
@@ -48,7 +51,7 @@ const LiveAiForm = ({ params }) => {
         </div>
       ) : (
         <>
-          <div className="flex flex-col gap-6 items-center">
+          <div className="flex flex-col gap-6 items-center ">
             {record && (
               <FormUi
                 jsonForm={jsonForm}

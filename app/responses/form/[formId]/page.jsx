@@ -15,7 +15,7 @@ import {
 import { ArrowLeft, Download } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import EmptyStatePlaceholder from "app/_components/EmptyState";
+import EmptyStatePlaceholder from "@/app/_components/EmptyStatePlaceholder";
 import {
   Table,
   TableBody,
@@ -78,7 +78,7 @@ const FormAnalysisPage = () => {
     };
     if (params?.formId) {
       fetchResponses(params.formId);
-  }
+    }
   }, [params?.formId]);
 
   const renderCell = (value) => {

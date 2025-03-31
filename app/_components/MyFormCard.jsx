@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { and, eq } from "drizzle-orm";
 import { toast } from "sonner";
-import { RWebShare } from "react-web-share";
 import { useUser } from "@clerk/nextjs";
 import { db } from "@/config";
 import { Edit, EllipsisVertical, FileText, Share, Trash2 } from "lucide-react";
@@ -80,18 +79,18 @@ const MyFormCard = ({
 
   return (
     <div
-      className="border rounded-lg overflow-hidden flex flex-col justify-between items-center gap-4 p-5 bg-background w-full min-h-[220px] shadow-md hover:shadow-lg cursor-pointer transition-all relative group"
+      className="border rounded-lg overflow-hidden flex flex-col items-center gap-4 p-5 bg-background w-full h-full min-h-[220px] hover:bg-muted/20 cursor-pointer transition-all relative group"
       onClick={handleCardClick}
     >
       <img
         src={"./formCard-bg.svg"}
         alt={"bg-image"}
-        className="absolute bottom-0 right-0 object-cover"
+        className="absolute bottom-0 right-0 object-cover opacity-60 hover:opacity-100 transition-opacity"
       />
-      
+
       {/* Top Section */}
       <div className="flex justify-between items-center w-full">
-        <div className="flex justify-center items-center rounded-xl p-3 bg-[#00bba7]/20">
+        <div className="flex justify-center items-center rounded-xl p-3 bg-primary/20">
           <FileText className="text-primary" />
         </div>
 
@@ -140,7 +139,7 @@ const MyFormCard = ({
       </div>
 
       {/* Title & Heading */}
-      <div className="flex flex-col justify-center items-start gap-1 w-full">
+      <div className="flex flex-col items-start gap-1 w-full">
         <h1 className="text-xl font-semibold break-words">
           {jsonForm?.formTitle}
         </h1>

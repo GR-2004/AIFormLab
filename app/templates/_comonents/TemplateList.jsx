@@ -18,7 +18,7 @@ import { useUser } from "@clerk/nextjs";
 import TemplateCard from "@/app/_components/TemplateCard";
 // import TemplateCard from "./TemplateCard";
 
-const TemplateList = ({columns, searchQuery}) => {
+const TemplateList = ({ columns, searchQuery }) => {
   const [templateList, setTemplateList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [previewForm, setPreviewForm] = useState(null);
@@ -47,11 +47,13 @@ const TemplateList = ({columns, searchQuery}) => {
   };
   // search logic
 
-   const trimmedQuery = searchQuery?.trim().toLowerCase();
-    const filteredTemplates = templateList.filter((template) => {
-    const formTitle = JSON.parse(template.jsonform)?.formTitle || "";
-    return formTitle.toLowerCase().includes(trimmedQuery);
-  });
+  const trimmedQuery = searchQuery?.trim().toLowerCase();
+  const filteredTemplates = !trimmedQuery
+    ? templateList
+    : templateList.filter((template) => {
+        const formTitle = JSON.parse(template.jsonform)?.formTitle || "";
+        return formTitle.toLowerCase().includes(trimmedQuery);
+      });
   const openPreview = (template) => {
     setPreviewForm(template);
     setIsPreviewOpen(true);

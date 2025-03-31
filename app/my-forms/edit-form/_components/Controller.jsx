@@ -13,15 +13,6 @@ import Style from "../../../_data/Style";
 import Fields from "../../../_data/Fields";
 import { Button } from "../../../../components/ui/button";
 import { Checkbox } from "../../../../components/ui/checkbox";
-import {
-  CaseSensitive,
-  CircleDot,
-  File,
-  SquareCheck,
-  SquareMousePointer,
-  Trash,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 
 const Controller = ({

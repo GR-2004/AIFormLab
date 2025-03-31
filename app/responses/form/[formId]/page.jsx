@@ -13,7 +13,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { ArrowLeft, Download } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import EmptyStatePlaceholder from "app/_components/EmptyState";
 import {
@@ -37,7 +37,8 @@ const formatHeaderName = (key) => {
   );
 };
 
-const FormAnalysisPage = ({ params }) => {
+const FormAnalysisPage = () => {
+  const params = useParams();
   const router = useRouter();
   const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,12 +46,12 @@ const FormAnalysisPage = ({ params }) => {
   const [modalData, setModalData] = useState(null);
 
   useEffect(() => {
-    const fetchResponses = async () => {
+    const fetchResponses = async (formId) => {
       try {
         const result = await db
           .select()
           .from(userResponses)
-          .where(eq(userResponses.formRef, params?.formId))
+          .where(eq(userResponses.formRef, formId))
           .orderBy(userResponses.createdAt);
 
         setResponses(result);
@@ -75,8 +76,9 @@ const FormAnalysisPage = ({ params }) => {
         setLoading(false);
       }
     };
-
-    fetchResponses();
+    if (params?.formId) {
+      fetchResponses(params.formId);
+  }
   }, [params?.formId]);
 
   const renderCell = (value) => {

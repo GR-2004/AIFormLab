@@ -5,8 +5,10 @@ import { userResponses } from "@/config/schema";
 import { eq } from "drizzle-orm";
 import { useTheme } from "next-themes";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { useParams } from "next/navigation";
 
-const FormAnalysisPage = ({ params }) => {
+const FormAnalysisPage = () => {
+    const params = useParams();
     const { theme } = useTheme();
     const [responses, setResponses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,12 +16,12 @@ const FormAnalysisPage = ({ params }) => {
     const [modalData, setModalData] = useState(null);
 
     useEffect(() => {
-        const fetchResponses = async () => {
+        const fetchResponses = async (formId) => {
             try {
                 const result = await db
                     .select()
                     .from(userResponses)
-                    .where(eq(userResponses.formRef, params?.formId))
+                    .where(eq(userResponses.formRef, formId))
                     .orderBy(userResponses.createdAt);
 
                 setResponses(result);
@@ -44,8 +46,9 @@ const FormAnalysisPage = ({ params }) => {
                 setLoading(false);
             }
         };
-
-        fetchResponses();
+        if (params?.formId) {
+            fetchResponses(params.formId);
+        }
     }, [params?.formId]);
 
     return (

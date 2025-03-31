@@ -4,7 +4,7 @@ import { db } from "../../../../config";
 import { JsonForms } from "../../../../config/schema";
 import { and, eq } from "drizzle-orm";
 import { useUser } from "@clerk/nextjs";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Loader,
@@ -20,7 +20,8 @@ import { toast } from "sonner";
 import Controller from "../_components/Controller";
 import { ShareButton } from "@/app/_components/ShareButton";
 
-const EditForm = ({ params }) => {
+const EditForm = () => {
+  const params = useParams();
   const { user } = useUser();
   const [jsonForm, setJsonForm] = useState([]);
   const pathname = usePathname();
@@ -205,6 +206,11 @@ const EditForm = ({ params }) => {
                   updateControllerFields();
                 }}
                 addField={(field) => addField(field)}
+                isTemplate={isTemplate}
+                setIsTemplate={() => {
+                  setIsTemplate((prev) => !prev);
+                  updateControllerFields();
+                }}
               />
               <div
                 className="md:col-span-2 rounded-2xl p-5 flex items-center justify-center border"

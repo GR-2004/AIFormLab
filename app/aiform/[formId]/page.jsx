@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FormUi from "../../my-forms/edit-form/_components/FormUi";
 import { Loader } from "lucide-react";
+import { useParams } from "next/navigation";
 
 const LiveAiForm = ({ params }) => {
   const [record, setRecord] = useState(null);

@@ -141,7 +141,7 @@ const EditForm = () => {
   };
 
   return (
-    <section className="max-w-[1376px] mx-auto p-4 md:p-8 bg-background min-h-screen">
+    <section className="max-w-[1376px] mx-auto p-4 md:p-8 bg-background min-h-screen overflow-hidden">
       {loading ? (
         <div className="flex justify-center items-center min-h-screen">
           <Loader className="h-6 w-6 animate-spin text-gray-600 dark:text-gray-300" />
@@ -213,7 +213,7 @@ const EditForm = () => {
                 }}
               />
               <div
-                className="md:col-span-2 rounded-2xl p-5 flex items-center justify-center border"
+                className="md:col-span-2 rounded-2xl p-4  border"
                 style={{ background: selectedBackground }}
               >
                 <FormUi

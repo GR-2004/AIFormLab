@@ -10,6 +10,7 @@ import MyFormCard from "../_components/MyFormCard";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import ResponseStatItem from "./_components/ResponseStatItem";
+import EmptyStatePlaceholder from "../_components/EmptyStatePlaceholder";
 
 const ResponsesPage = () => {
   const router = useRouter();
@@ -43,19 +44,19 @@ const ResponsesPage = () => {
     }
   };
 
-useEffect(() => {
-  if (!searchQuery.trim()) {
-    setFilteredForms(formList);
-    return;
-  }
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredForms(formList);
+      return;
+    }
 
-  const filtered = formList.filter((form) => {
-    const formTitle = JSON.parse(form.jsonform)?.formTitle || "";
-    return formTitle.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+    const filtered = formList.filter((form) => {
+      const formTitle = JSON.parse(form.jsonform)?.formTitle || "";
+      return formTitle.toLowerCase().includes(searchQuery.toLowerCase());
+    });
 
-  setFilteredForms(filtered);
-}, [searchQuery, formList]);
+    setFilteredForms(filtered);
+  }, [searchQuery, formList]);
 
   return (
     <section className="max-w-[1376px] mx-auto p-4 md:p-8 flex flex-col gap-6 min-h-screen overflow-hidden">
@@ -109,22 +110,28 @@ useEffect(() => {
               icon={Activity}
             />
           </div>
-          <div className="my-5 grid grid-cols-2 gap-5 lg:grid-cols-4 ">
-            {filteredForms.map((form, index) => (
-              // <FormListItemResp
-              //   key={index}
-              //   formRecord={form}
-              //   jsonForm={JSON.parse(form.jsonform)}
-              // />
-              <MyFormCard
-                key={index}
-                formRecord={form}
-                jsonForm={JSON.parse(form.jsonform)}
-                onClick={() => router.push(`/responses/form/${form.id}`)}
-                setTotalResponses={(value) => setTotalResponses(value)}
-              />
-            ))}
-          </div>
+          {filteredForms.length === 0 ? (
+            <EmptyStatePlaceholder
+              title={searchQuery ? "No matches found" : "No responses yet"}
+              description={
+                searchQuery
+                  ? `No forms matching "${searchQuery}"`
+                  : "Share your forms to start collecting responses"
+              }
+            />
+          ) : (
+            <div className="my-5 grid grid-cols-2 gap-5 lg:grid-cols-4 ">
+              {filteredForms.map((form, index) => (
+                <MyFormCard
+                  key={index}
+                  formRecord={form}
+                  jsonForm={JSON.parse(form.jsonform)}
+                  onClick={() => router.push(`/responses/form/${form.id}`)}
+                  setTotalResponses={(value) => setTotalResponses(value)}
+                />
+              ))}
+            </div>
+          )}
         </>
       )}
     </section>

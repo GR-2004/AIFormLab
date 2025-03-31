@@ -138,6 +138,7 @@ const TemplateList = ({ columns, searchQuery }) => {
               editable={false}
               formId={previewForm?.id}
               enabledSignIn={previewForm?.enabledSignIn}
+              isTemplateCard={true}
             />
           </div>
         </DialogContent>

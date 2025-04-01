@@ -32,7 +32,7 @@ export default function SuccessPage() {
             </motion.h1>
             
             <p className="text-gray-600 dark:text-gray-400 mt-2 text-center">
-                Thank you for your response. You can return to the dashboard now.
+                Thank you for your response. You can return to the Home now.
             </p>
 
             {/* Back to Dashboard Button */}
@@ -43,9 +43,9 @@ export default function SuccessPage() {
             >
                 <Button 
                     className="mt-6 px-6 py-3 text-lg font-medium"
-                    onClick={() => router.push("/dashboard")}
+                    onClick={() => router.push("/")}
                 >
-                    Go Back to Dashboard
+                    Go Back to Home
                 </Button>
             </motion.div>
         </div>

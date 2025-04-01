@@ -5,7 +5,7 @@ import { JsonForms } from "../../../config/schema";
 import { eq } from "drizzle-orm";
 import Image from "next/image";
 import Link from "next/link";
-import FormUi from "../../edit-form/_components/FormUi";
+import FormUi from "../../my-forms/edit-form/_components/FormUi";
 import { Loader } from "lucide-react";
 
 const LiveAiForm = ({ params }) => {

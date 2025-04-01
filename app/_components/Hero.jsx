@@ -1,45 +1,85 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import React from "react";
+import TemplateCard from "./TemplateCard";
+import { useRouter } from "next/navigation";
+import TemplateList from "../templates/_comonents/TemplateList";
+import PromptInput from "./PromptInput";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Header from "./Header";
-import { useTheme } from "next-themes"; // Import the useTheme hook
+const promptMessage = [
+  {
+    id: 1,
+    prompt: "Job Application",
+  },
+  {
+    id: 2,
+    prompt: "Registration Form",
+  },
+  {
+    id: 3,
+    prompt: "Course Exit Form",
+  },
+  {
+    id: 4,
+    prompt: "Feedback Form",
+  },
+  {
+    id: 5,
+    prompt: "Customer Support Form",
+  },
+];
 
 const Hero = () => {
-  const { theme, systemTheme } = useTheme();
-
-  const currentTheme = theme === "system" ? systemTheme : theme;
-
+  const router = useRouter();
   return (
-    <div className={`min-h-screen ${currentTheme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
-      <Header />
-      <section className={`min-h-[calc(100vh-60px)] ${currentTheme === "dark" ? "bg-gray-800" : "bg-gray-50"}`}>
-        <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen">
-          <div className="mx-auto max-w-xl text-center">
-            <h1
-              className={`bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl ${currentTheme === "dark" ? "text-white" : "text-gray-900"}`}
-            >
-              Create Your Forms
-              <span className="sm:block"> With AI </span>
-            </h1>
-
-            <p className={`mx-auto mt-4 max-w-xl sm:text-xl/relaxed ${currentTheme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-              Build custom forms instantly using AI. Transform your ideas into professional forms with
-              natural language - no coding required.
-            </p>
-
-            <div className="mt-8 flex flex-wrap justify-center items-center">
-              <Link
-                className={`block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-black focus:outline-none focus:ring active:text-opacity-75 sm:w-auto ${currentTheme === "dark" ? "hover:bg-blue-500" : "hover:bg-blue-700"}`}
-                href="/dashboard"
-              >
-                Get Started
-              </Link>
+    <section className="max-w-[1376px] mx-auto p-4 md:p-8">
+      <div className="flex items-center justify-center flex-col gap-4 md:gap-8 max-w-4xl min-h-screen mx-auto">
+        <div className="flex flex-col items-center justify-center gap-6">
+          <div className="flex flex-col gap-8 items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <Image
+                src={"/logo-icon.svg"}
+                className="rotate-6"
+                alt="logo"
+                width={64}
+                height={64}
+              />
+              <h1 className="text-4xl md:text-5xl font-semibold max-w-xl text-center">
+                Create a form with
+                <span className="text-primary"> Formify</span> in Minutes
+              </h1>
             </div>
+            <PromptInput />
+          </div>
+          <div className="flex flex-row justify-center flex-wrap gap-4 items-center w-full">
+            {promptMessage.map((item, index) => (
+              <Button key={item.id} variant="outline" className="rounded-xl">
+                {item.prompt}
+              </Button>
+            ))}
           </div>
         </div>
-      </section>
-    </div>
+
+        <div className="py-6 flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <h1 className="text-base font-semibold">
+              Recently created Templates
+            </h1>
+            <Button
+              variant="outline"
+              className="border-none"
+              onClick={() => {
+                router.push("/templates");
+              }}
+            >
+              View More
+            </Button>
+          </div>
+          <TemplateList />
+        </div>
+      </div>
+    </section>
   );
 };
 

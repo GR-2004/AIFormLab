@@ -83,7 +83,6 @@ export default function SignInPage() {
       role="main"  // Accessible main content area
       aria-label="Sign-in page"
     >
-      <Header /> {/* Ensure the header is at the top */}
       <div className="flex items-center justify-center min-h-[calc(100vh-60px)]">
         <SignIn appearance={currentTheme === "dark" ? darkTheme : lightTheme} />
       </div>

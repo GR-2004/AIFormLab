@@ -39,6 +39,8 @@ const MyFormCard = ({
   const [responseCount, setResponseCount] = useState(0);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [renameTitle, setRenameTitle] = useState(jsonForm?.formTitle || "");
+  const [renameModalOpen, setRenameModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +58,45 @@ const MyFormCard = ({
     };
     fetchData();
   }, []);
+
+  const updateFormTitle = async () => {
+    if (!renameTitle.trim()) {
+      toast.error("Title cannot be empty!");
+      return;
+    }
+
+    try {
+      const [existingForm] = await db
+        .select({ jsonform: JsonForms.jsonform })
+        .from(JsonForms)
+        .where(eq(JsonForms.id, formRecord.id));
+
+      if (!existingForm) {
+        throw new Error("Form not found");
+      }
+
+      const updatedJson = JSON.stringify({
+        ...JSON.parse(existingForm.jsonform),
+        formTitle: renameTitle, 
+      });
+
+      const result = await db
+        .update(JsonForms)
+        .set({ jsonform: updatedJson }) 
+        .where(eq(JsonForms.id, formRecord.id))
+        .returning({ id: JsonForms.id, jsonform: JsonForms.jsonform });
+
+      if (!result || result.length === 0) {
+        throw new Error("Update failed");
+      }
+
+      toast.success("Form renamed successfully!");
+      refreshData();
+      setRenameModalOpen(false);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
 
   const deleteForm = async () => {
     setLoading(true);
@@ -83,8 +124,11 @@ const MyFormCard = ({
     }
   };
 
-  const handleCardClick = () => {
-    if (activeDropdown !== formRecord.id) {
+  const handleCardClick = (e) => {
+  
+    if (renameModalOpen || alertOpen) {
+      e.stopPropagation(); 
+    } else {
       router.push(`/my-forms/edit-form/${formRecord.id}`);
     }
   };
@@ -161,13 +205,14 @@ const MyFormCard = ({
 
             <DropdownMenuItem
               onClick={(e) => {
-                e.stopPropagation();
-                toast.success("Rename option clicked!");
+                e.stopPropagation(); 
+                setRenameModalOpen(true);
               }}
-              className="flex items-center p-2 cursor-pointer hover:bg-muted focus:bg-muted rounded-md"
             >
-              <Edit className="h-4 w-4 mr-3 text-muted-foreground" />
-              <span className="font-medium">Rename</span>
+              <div className="flex items-center w-full">
+                <Edit className="h-4 w-4 mr-5 text-muted-foreground" />
+                <span className="font-medium">Rename</span>
+              </div>
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -234,6 +279,27 @@ const MyFormCard = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Rename Modal */}
+      {renameModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded-lg shadow-lg w-[300px]">
+            <h2 className="text-lg font-semibold mb-3">Rename Form</h2>
+            <input
+              type="text"
+              className="border p-2 rounded w-full"
+              value={renameTitle}
+              onChange={(e) => setRenameTitle(e.target.value)}
+            />
+            <div className="flex justify-end gap-2 mt-3">
+              <Button variant="outline" onClick={() => setRenameModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={updateFormTitle}>Save</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

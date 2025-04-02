@@ -20,10 +20,8 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex flex-col md:flex-row gap-4 items-center">
-          <Button className="w-full">
-            Create Form <Plus />
-          </Button>
-          <Button variant="outline" className="w-full">
+          <CreateForm />
+          <Button variant="outline" className="w-full" onClick={() => router.push("/templates")}>
             View Templates
           </Button>
         </div>

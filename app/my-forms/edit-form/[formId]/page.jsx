@@ -241,7 +241,7 @@ const EditForm = () => {
                 style={{ background: selectedBackground }}
               >
                 {!isActive && (
-                  <div className="bg-yellow-200/30 text-white p-3 rounded-lg text-center mb-4">
+                  <div className="p-3 text-center mb-4">
                     ⚠️ This form is currently deactivated. You cannot submit responses.
                   </div>
                 )}

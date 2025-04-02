@@ -34,6 +34,8 @@ const EditForm = () => {
   const [selectedStyle, setSelectedStyle] = useState("");
   const [signInEnabled, setSignInEnabled] = useState(false);
   const [isTemplate, setIsTemplate] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -52,18 +54,26 @@ const EditForm = () => {
             eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress)
           )
         );
+
       setRecord(result[0]);
       setJsonForm(JSON.parse(result[0].jsonform));
       setSelectedTheme(result[0].theme);
       setSelectedBackground(result[0].background);
+      console.log("Setting Record:", result[0]);
+      console.log("Setting JSON Form:", JSON.parse(result[0].jsonform));
       setIsTemplate(result[0].isTemplate);
       setSelectedStyle(JSON.parse(result[0].style));
+      setIsActive(result[0].isActive);
       setLoading(false);
     } catch (error) {
       setError(error);
+      console.log("error", error);
       setLoading(false);
     }
+
   };
+
+
 
   useEffect(() => {
     if (updateTrigger) {
@@ -71,6 +81,11 @@ const EditForm = () => {
       updateJsonFormInDb();
     }
   }, [updateTrigger]);
+
+
+
+
+
 
   const formUrl = process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + record?.id;
 
@@ -124,6 +139,8 @@ const EditForm = () => {
           style: JSON.stringify(selectedStyle),
           enabledSignIn: signInEnabled,
           isTemplate: isTemplate,
+          isActive: isActive,
+
         })
         .where(
           and(
@@ -139,6 +156,8 @@ const EditForm = () => {
       toast.error("Something went wrong");
     }
   };
+
+
 
   return (
     <section className="max-w-[1376px] mx-auto p-4 md:p-8 bg-background min-h-screen overflow-hidden">
@@ -211,11 +230,21 @@ const EditForm = () => {
                   setIsTemplate((prev) => !prev);
                   updateControllerFields();
                 }}
+                isActive={isActive}
+                setIsActive={() => {
+                  setIsActive((prev) => !prev);
+                  updateControllerFields();
+                }}
               />
               <div
-                className="md:col-span-2 rounded-2xl p-4  border"
+                className="md:col-span-2 rounded-2xl p-4 border"
                 style={{ background: selectedBackground }}
               >
+                {!isActive && (
+                  <div className="bg-yellow-200/30 text-white p-3 rounded-lg text-center mb-4">
+                    ⚠️ This form is currently deactivated. You cannot submit responses.
+                  </div>
+                )}
                 <FormUi
                   jsonForm={jsonForm}
                   selectedTheme={selectedTheme}

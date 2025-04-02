@@ -24,6 +24,7 @@ const LiveAiForm = () => {
 
   const GetFormData = async (formId) => {
     setLoading(true);
+
     try {
       const result = await db
         .select()
@@ -32,6 +33,7 @@ const LiveAiForm = () => {
       setRecord(result[0]);
       setJsonForm(JSON.parse(result[0].jsonform));
       setLoading(false);
+
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -51,8 +53,14 @@ const LiveAiForm = () => {
         </div>
       ) : (
         <>
+
           <div className="flex flex-col gap-6 items-center ">
-            {record && (
+            {/* 🔹 Show Alert If Form is Not Active */}
+            {record && (!record?.isActive ? (
+              <div className="bg-red-500 text-white p-4 rounded-lg text-center">
+                ⚠️ This form is currently **deactivated**. You cannot submit responses.
+              </div>
+            ) : (
               <FormUi
                 jsonForm={jsonForm}
                 selectedStyle={JSON.parse(record?.style)}
@@ -61,7 +69,7 @@ const LiveAiForm = () => {
                 formId={record?.id}
                 enabledSignIn={record?.enabledSignIn}
               />
-            )}
+            ))}
 
             <Link
               href={"/"}

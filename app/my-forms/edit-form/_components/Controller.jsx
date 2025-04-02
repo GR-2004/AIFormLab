@@ -23,6 +23,8 @@ const Controller = ({
   addField,
   isTemplate,
   setIsTemplate,
+  isActive,
+  setIsActive,
 }) => {
   const [showMore, setShowMore] = useState(6);
   const [fields, setFields] = useState([]);
@@ -156,19 +158,32 @@ const Controller = ({
           ))}
         </div>
       </div>
-      {/* template controller */}
-      <div className="mt-10 flex items-center gap-2">
-        <div className="flex flex-col gap-[2px]">
-          <h2 className="text-base font-medium break-words">
-            Make Public Template
-          </h2>
-          <p className="text-muted-foreground text-sm break-words">
-            Allow others to use this as a starting point while keeping your
-            original content unchanged.
-          </p>
-        </div>
-        <Switch checked={isTemplate} onCheckedChange={() => setIsTemplate()} />
-      </div>
+<div className="mt-10 flex flex-col gap-4">
+  {/* Template Controller */}
+  <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-[2px]">
+      <h2 className="text-base font-medium break-words">Make Public Template</h2>
+      <p className="text-muted-foreground text-sm break-words">
+        Allow others to use this as a starting point while keeping your original content unchanged.
+      </p>
+    </div>
+    <Switch checked={isTemplate} onCheckedChange={() => setIsTemplate(prev => !prev)} />
+  </div>
+
+  {/* Deactivate Form Switch */}
+  <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-[2px]">
+      <h2 className="text-base font-medium break-words">Deactivate Form</h2>
+      <p className="text-muted-foreground text-sm break-words">
+        Disable this form to prevent new submissions while keeping data intact.
+      </p>
+    </div>
+    <Switch checked={!isActive} onCheckedChange={() => setIsActive(prev => !prev)} />
+  </div>
+</div>
+
+
+
       {/* for social auth check */}
       <div className="mt-10 flex items-center gap-2">
         <Checkbox onCheckedChange={(e) => setSignInEnabled(e)} />

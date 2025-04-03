@@ -58,7 +58,7 @@ const Hero = () => {
                 height={64}
               />
               <h1 className="text-4xl md:text-5xl font-semibold max-w-xl text-center">
-                Create a form with
+                Create a AI Form with
                 <span className="text-primary"> Formify</span> in Minutes
               </h1>
             </div>
